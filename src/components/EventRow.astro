@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  location: string;
+  description?: string;
+  ticketUrl?: string;
+  index?: number;
+  archived?: boolean;
+}
+
+const { title, date, location, description, ticketUrl, index = 1, archived = false } = Astro.props;
+
+const day = String(date.getDate()).padStart(2, '0');
+const month = String(date.getMonth() + 1).padStart(2, '0');
+const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+const txId = `TX_${String(index).padStart(3, '0')}`;
+
+function toIcsDate(d: Date) {
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+const icsHref = `data:text/calendar;charset=utf-8,${encodeURIComponent(
+  [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'BEGIN:VEVENT',
+    `SUMMARY:${title}`,
+    `DTSTART:${toIcsDate(date)}`,
+    `LOCATION:${location}`,
+    `DESCRIPTION:${description ?? ''}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+)}`;
+---
+
+<div class={`evt-row ${archived ? 'is-archived' : ''}`}>
+  <div class="evt-idx">
+    {txId}
+    <span class="dt">{day}.{month}</span>
+    <span class="tm">{time}</span>
+  </div>
+
+  <div>
+    <div class="evt-title glitch" data-text={title}>{title}</div>
+    <div class="evt-venue">
+      <b>{location}</b>
+    </div>
+    {description && <p class="evt-desc">{description}</p>}
+  </div>
+
+  <div class="evt-actions">
+    {archived ? (
+      <span class="evt-cta" style="opacity:.5;">ARCHIVIERT</span>
+    ) : (
+      <a class="evt-cta" href={ticketUrl ?? '#termine'}>{ticketUrl ? 'TICKETS →' : 'INFO →'}</a>
+    )}
+    <a class="evt-ics" href={icsHref} download={`${title}.ics`}>+ Zum Kalender hinzufügen</a>
+  </div>
+</div>

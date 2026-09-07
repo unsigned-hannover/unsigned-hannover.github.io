@@ -1,65 +1,71 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import EventCard from '../components/EventCard.astro';
-import RadioEmbed from '../components/RadioEmbed.astro';
+import EventRow from '../components/EventRow.astro';
+import EventRowEditorial from '../components/EventRowEditorial.astro';
+import RadioPlayer from '../components/RadioPlayer.astro';
+import RadioEditorial from '../components/RadioEditorial.astro';
+import HeroEditorial from '../components/HeroEditorial.astro';
 import StatsBlock from '../components/StatsBlock.astro';
 import ContactForm from '../components/ContactForm.astro';
 
 const now = new Date();
-const allEvents = await getCollection('events');
-const upcomingEvents = allEvents
+const upcomingEvents = (await getCollection('events'))
   .filter((event) => !event.data.hidden && event.data.date >= now)
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
   .slice(0, 5);
 
-const allRadio = await getCollection('radio');
-const latestEpisode = allRadio.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 ---
 
 <Layout
   title="Start"
   description="UNSIGNED. ist ein Kulturverein aus Hannover für elektronische Musik: Events, Podcast und eine Community zum Mitmachen."
 >
-  <section class="band">
-    <div class="mx-auto max-w-5xl px-4 py-16 sm:py-24">
-      <h1 class="brand-heading text-4xl tracking-tight sm:text-5xl">
-        UNSIGNED<span class="brand-dot">.</span>
-      </h1>
-      <p class="mt-4 max-w-xl text-lg opacity-90">
-        Kulturverein für elektronische Musik in Hannover. Wir veranstalten Events, produzieren einen Podcast und
-        bauen eine Community zum Vernetzen und Austauschen auf.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-4">
-        <a href="#termine" class="btn-primary px-5 py-2.5 text-sm font-bold">
-          Nächste Termine
-        </a>
-        <a
-          href="https://www.instagram.com/unsigned.hannover/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-outline px-5 py-2.5 text-sm font-bold"
-        >
-          Instagram
-        </a>
-      </div>
+  <!-- ============ HERO ============ -->
+  <section class="hero v-signal">
+    <div class="rail-left">TECH HOUSE <b>//</b> TECHNO — HANNOVER, DE <b>///</b> OPEN DECKS — BAR NIGHTS — DAY PARTIES</div>
 
-      <div class="mt-12">
-        <StatsBlock />
-      </div>
+    <div class="rec"><span class="flicker-dot">●</span> ON AIR — SIGNAL AKTIV</div>
+
+    <h1 class="hero-wordmark glitch" data-text="UNSIGNED.">UNSIGNED<span class="dot">.</span></h1>
+
+    <div class="hero-panel" aria-hidden="true"></div>
+
+    <p class="hero-sub">
+      <span class="tag">KULTURVEREIN UNSIGNED. e.V.</span>
+      Ein gemeinnütziger Kulturverein für elektronische Musik aus Hannover — Open Decks, Bar Nights, Tagesveranstaltungen.
+      Kein Line-up-Gatekeeping, keine Attitüde. Nur Boxen, Platten und Leute, die auflegen wollen.
+    </p>
+
+    <div class="hero-coords">
+      52.3759° N / 9.7320° E<br />
+      <b>PLATZBAR</b> — HANNOVER<br />
+      SIG ▮▮▮▮▯ STABIL
     </div>
+
+    <div class="scrollcue"><span>↓</span> SCROLLEN — REC 001</div>
   </section>
 
-  <section id="termine" class="mx-auto max-w-5xl px-4 py-16">
-    <div class="flex items-end justify-between gap-4">
-      <h2 class="brand-heading text-2xl text-neutral-900">Termine</h2>
-      <a href="/veranstaltungen/" class="text-sm font-semibold text-brand hover:text-brand-dark">Alle Veranstaltungen →</a>
-    </div>
-    <div class="mt-6 space-y-4">
+  <div class="v-editorial">
+    <HeroEditorial />
+  </div>
+
+  <!-- ============ STATS (nur Signal – Editorial hat die Leiste im Hero) ============ -->
+  <section class="plate tinted v-signal">
+    <div class="module-label"><span class="idx">MODULE_01</span> SIGNALSTÄRKE — MESSWERTE</div>
+    <StatsBlock />
+  </section>
+
+  <!-- ============ TERMINE ============ -->
+  <section class="plate" id="termine">
+    <div class="v-signal">
+      <div class="module-label"><span class="idx">MODULE_02</span> ANSTEHENDE ÜBERTRAGUNGEN</div>
       {
         upcomingEvents.length > 0 ? (
-          upcomingEvents.map((event) => (
-            <EventCard
+          upcomingEvents.map((event, i) => (
+            <EventRow
+              index={i + 1}
               title={event.data.title}
               date={event.data.date}
               location={event.data.location}
@@ -68,43 +74,83 @@ const latestEpisode = allRadio.sort((a, b) => b.data.date.valueOf() - a.data.dat
             />
           ))
         ) : (
-          <p class="text-neutral-500">Aktuell keine Termine geplant – schau bald wieder vorbei.</p>
+          <p class="prose">Aktuell keine Termine geplant — schau bald wieder vorbei.</p>
         )
       }
     </div>
-    <p class="mt-6 text-sm text-neutral-500">
-      Alle Announcements gibt's auch im <a href="https://www.instagram.com/unsigned.hannover/" class="text-brand hover:text-brand-dark">WhatsApp-Kanal</a>.
+
+    <div class="v-editorial">
+      <div class="ed-head-row">
+        <div>
+          <p class="ed-eyebrow">Spielplan</p>
+          <h2 class="ed-h2">Termine</h2>
+        </div>
+        <a href="/veranstaltungen/" class="ed-btn ed-btn-ghost">Alle Termine →</a>
+      </div>
+      <div class="ed-events">
+        {
+          upcomingEvents.length > 0 ? (
+            upcomingEvents.map((event) => (
+              <EventRowEditorial
+                title={event.data.title}
+                date={event.data.date}
+                location={event.data.location}
+                description={event.data.description}
+                ticketUrl={event.data.ticketUrl}
+              />
+            ))
+          ) : (
+            <p class="prose">Aktuell keine Termine geplant — schau bald wieder vorbei.</p>
+          )
+        }
+      </div>
+    </div>
+
+    <p class="prose v-signal" style="margin-top:22px;">
+      Alle <a href="/veranstaltungen/" style="color:var(--color-brand);">Veranstaltungen im Archiv →</a> · Announcements auch im
+      <a href="https://www.instagram.com/unsigned.hannover/" style="color:var(--color-brand);"> WhatsApp-Kanal</a>.
     </p>
   </section>
 
-  <section class="band">
-    <div class="mx-auto max-w-5xl px-4 py-16">
-      <div class="flex items-end justify-between gap-4">
-        <h2 class="brand-heading text-2xl">UNSIGNED.RADIO</h2>
-        <a href="/radio/" class="text-sm font-semibold underline underline-offset-2 hover:opacity-70">Alle Folgen →</a>
+  <!-- ============ RADIO ============ -->
+  <section class="plate tinted">
+    <div class="v-signal">
+      <div class="module-label"><span class="idx">MODULE_03</span> BROADCAST</div>
+      <div class="radio-grid">
+        <div>
+          <h2 class="radio-head glitch" data-text="UNSIGNED.RADIO">UNSIGNED<span class="dot">.</span>RADIO</h2>
+          <p class="prose" style="margin-top:22px;">
+            Unser zweiwöchentlicher DJ-Podcast — gehostet auf SoundCloud. Von Bedroom-Mixes bis floor-erprobten Sets,
+            aufgenommen von den Leuten, die bei uns auflegen. Kein Filter, kein Gatekeeping.
+          </p>
+          <div class="onair"><span class="flicker-dot">●</span> NEUE FOLGE ALLE 2 WOCHEN</div>
+          <p style="margin-top:20px;"><a href="/radio/" style="color:var(--color-brand); font-size:12px; letter-spacing:.15em;">ALLE FOLGEN →</a></p>
+        </div>
+
+        {latestEpisode && <RadioPlayer title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} episodeNumber="NEUESTE FOLGE" />}
       </div>
-      <p class="mt-2 opacity-90">Unser zweiwöchentlicher Podcast mit lokalen Artists.</p>
-      {
-        latestEpisode && (
-          <div class="mt-6">
-            <RadioEmbed title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} />
-          </div>
-        )
-      }
+    </div>
+
+    <div class="v-editorial">
+      {latestEpisode && <RadioEditorial title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} />}
     </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-4 py-16">
-    <div class="border border-brand/30 bg-brand/5 p-6 sm:p-8">
-      <h2 class="brand-heading text-2xl text-neutral-900">Lust mitzumachen? Mitglied werden!</h2>
-      <p class="mt-2 max-w-2xl text-neutral-600">
-        Wir suchen ordentliche und fördernde Mitglieder, die Lust haben sich einzubringen. Mehr dazu auf der <a href="/mitmachen/" class="text-brand hover:text-brand-dark">Mitmachen-Seite</a> oder direkt auf der <a href="/kulturverein/" class="text-brand hover:text-brand-dark">Kulturverein-Seite</a>.
-      </p>
-    </div>
+  <!-- ============ CTA MITGLIED ============ -->
+  <section class="plate cta-plate">
+    <div class="module-label"><span class="idx">MODULE_04</span> MITGLIEDSCHAFT</div>
+    <h2 class="v-signal">WERDE TEIL DES SIGNALS<span class="dot">.</span></h2>
+    <h2 class="v-editorial">Lust mit<br />zu machen<span class="dot">?</span></h2>
+    <p>
+      Kulturverein UNSIGNED. e.V. lebt von seinen Mitgliedern — Zugang zu Open Decks, Mitsprache bei der Programmplanung
+      und eine Crew, die wirklich zeigt. Wir sind gemeinnützig; wir brauchen mehr von euch.
+    </p>
+    <a class="cta-btn" href="/kulturverein/#mitglied-werden">→ MITGLIED WERDEN</a>
   </section>
 
-  <section id="kontakt" class="mx-auto max-w-5xl px-4 pb-20">
-    <h2 class="brand-heading mb-6 text-2xl text-neutral-900">Kontakt</h2>
+  <!-- ============ KONTAKT ============ -->
+  <section class="plate" id="kontakt">
+    <div class="module-label"><span class="idx">MODULE_04B</span> KONTAKT</div>
     <ContactForm formType="contact" heading="Schreib uns" />
   </section>
 </Layout>

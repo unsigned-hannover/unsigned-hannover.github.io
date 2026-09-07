@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  location: string;
+  description?: string;
+  ticketUrl?: string;
+  archived?: boolean;
+}
+
+const { title, date, location, description, ticketUrl, archived = false } = Astro.props;
+
+const months = ['', 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const dayName = date.toLocaleDateString('de-DE', { weekday: 'short' }).replace('.', '');
+const day = String(date.getDate()).padStart(2, '0');
+const month = months[date.getMonth() + 1];
+const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+
+// Tag aus dem Titel ableiten – hält das CMS-Schema unverändert.
+const upper = title.toUpperCase();
+const tags: { label: string; cls: string }[] = [];
+if (upper.includes('OPEN DECKS')) tags.push({ label: 'Open Decks', cls: 'is-decks' });
+if (upper.includes('BAR NIGHT')) tags.push({ label: 'Bar Night', cls: '' });
+if (tags.length === 0) tags.push({ label: 'Party', cls: 'is-party' });
+
+function toIcsDate(d: Date) {
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+const icsHref = `data:text/calendar;charset=utf-8,${encodeURIComponent(
+  [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'BEGIN:VEVENT',
+    `SUMMARY:${title}`,
+    `DTSTART:${toIcsDate(date)}`,
+    `LOCATION:${location}`,
+    `DESCRIPTION:${description ?? ''}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+)}`;
+---
+
+<article class="ed-evt" style={archived ? 'opacity:.55' : undefined}>
+  <div class="ed-evt-date">
+    <div class="dow">{dayName}</div>
+    <div class="day">{day}</div>
+    <div class="mon">{month}</div>
+  </div>
+
+  <div>
+    <div class="ed-tags">
+      {tags.map((tag) => <span class={`ed-tag ${tag.cls}`}>{tag.label}</span>)}
+    </div>
+    <h3>{title}</h3>
+    <p>{time} Uhr · {location}{description ? ` — ${description}` : ''}</p>
+  </div>
+
+  <div class="ed-evt-actions">
+    {
+      archived ? (
+        <span class="ics">Archiviert</span>
+      ) : (
+        <>
+          {ticketUrl && (
+            <a class="ics" href={ticketUrl} target="_blank" rel="noopener noreferrer">
+              Tickets →
+            </a>
+          )}
+          <a class="ics" href={icsHref} download={`${title}.ics`}>
+            + Kalender
+          </a>
+          <span class="ed-evt-arrow">→</span>
+        </>
+      )
+    }
+  </div>
+</article>

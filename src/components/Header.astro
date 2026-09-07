@@ -1,99 +1,94 @@
 ---
 const nav = [
-  { href: "/", label: "Start" },
-  { href: "/veranstaltungen/", label: "Veranstaltungen" },
-  { href: "/radio/", label: "Radio" },
-  { href: "/kulturverein/", label: "Kulturverein" },
-  { href: "/mitmachen/", label: "Mitmachen" },
+  { href: '/', label: 'Start' },
+  { href: '/veranstaltungen/', label: 'Veranstaltungen' },
+  { href: '/radio/', label: 'Radio' },
+  { href: '/kulturverein/', label: 'Kulturverein' },
+  { href: '/mitmachen/', label: 'Mitmachen' },
 ];
 const currentPath = Astro.url.pathname;
 
-const themes: { value: string; label: string }[] = [
-  { value: "poster", label: "Poster" },
-  { value: "mono", label: "Mono" },
-  { value: "blackout", label: "Blackout" },
-  { value: "flyer", label: "Flyer" },
+const variants = [
+  { value: 'signal', label: 'Signal' },
+  { value: 'editorial', label: 'Editorial' },
 ];
 ---
 
-<header class="site-header sticky top-0 z-50 backdrop-blur">
-  <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
-    <a href="/" class="site-header-link text-lg font-extrabold tracking-tight" style="color: var(--fg-header)">
-      UNSIGNED<span class="text-brand">.</span>
-    </a>
+<nav class="site-nav">
+  <a href="/" class="logo">
+    UNSIGNED<span class="dot">.</span>
+  </a>
 
-    <nav class="hidden gap-6 text-sm font-semibold lg:flex">
-      {
-        nav.map((item) => (
-          <a href={item.href} class={`site-header-link transition-colors ${currentPath === item.href ? "is-active" : ""}`}>
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
-
-    <div class="hidden items-center gap-1 border border-current px-1 py-1 text-[10px] font-bold uppercase tracking-wide opacity-70 hover:opacity-100 lg:flex" style="color: var(--fg-header)" id="theme-switcher">
-      {
-        themes.map((t) => (
-          <button type="button" data-theme-value={t.value} class="theme-switch-btn px-2 py-1 transition-colors" title={`Design: ${t.label} (temporär)`}>
-            {t.label}
-          </button>
-        ))
-      }
-    </div>
-
-    <details class="relative lg:hidden">
-      <summary class="site-header-link cursor-pointer list-none" style="color: var(--fg-header)">
-        <span class="sr-only">Menü</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </summary>
-      <nav class="card absolute right-0 mt-3 flex w-52 flex-col gap-1 bg-neutral-900 p-2 text-sm font-semibold text-white shadow-xl">
-        {
-          nav.map((item) => (
-            <a href={item.href} class="px-3 py-2 text-white/80 hover:bg-white/5 hover:text-brand">
-              {item.label}
-            </a>
-          ))
-        }
-        <div class="mt-1 border-t border-white/10 pt-2">
-          <p class="px-3 pb-1 text-[10px] font-bold uppercase tracking-wide text-white/40">Design (temporär)</p>
-          <div class="flex flex-wrap gap-1 px-3">
-            {
-              themes.map((t) => (
-                <button type="button" data-theme-value={t.value} class="theme-switch-btn border border-white/20 px-2 py-1 text-xs text-white/70">
-                  {t.label}
-                </button>
-              ))
-            }
-          </div>
-        </div>
-      </nav>
-    </details>
-  </div>
-</header>
-
-<script is:inline>
-  (function () {
-    function applyActiveStates() {
-      var current = document.documentElement.getAttribute('data-theme') || 'poster';
-      document.querySelectorAll('.theme-switch-btn').forEach(function (btn) {
-        var active = btn.getAttribute('data-theme-value') === current;
-        btn.style.textDecoration = active ? 'underline' : 'none';
-        btn.style.opacity = active ? '1' : '0.6';
-      });
+  <div class="nav-links">
+    {
+      nav.map((item) => (
+        <a href={item.href} class={currentPath === item.href ? 'is-active' : ''}>
+          {item.label}
+        </a>
+      ))
     }
-    document.querySelectorAll('.theme-switch-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var value = btn.getAttribute('data-theme-value');
-        document.documentElement.setAttribute('data-theme', value);
-        try {
-          localStorage.setItem('unsigned-theme', value);
-        } catch (e) {}
-        applyActiveStates();
-      });
+  </div>
+
+  <div class="clock"><span class="flicker-dot">●</span><span id="clock">00:00:00</span></div>
+
+  <div class="variant-switch" id="variant-switch" title="Design-Variante (temporär)">
+    {
+      variants.map((v) => (
+        <button type="button" data-variant-value={v.value}>
+          {v.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-mobile">
+    MENU
+  </button>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile" hidden>
+  {
+    nav.map((item) => (
+      <a href={item.href} class={currentPath === item.href ? 'is-active' : ''}>
+        {item.label}
+      </a>
+    ))
+  }
+</div>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-mobile');
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.hidden;
+    if (menu) menu.hidden = isOpen;
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  const clockEl = document.getElementById('clock');
+  function tick() {
+    const d = new Date();
+    const p = (n: number) => (n < 10 ? '0' : '') + n;
+    if (clockEl) clockEl.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  function markCurrent() {
+    const current = document.documentElement.getAttribute('data-variant') || 'signal';
+    document.querySelectorAll<HTMLButtonElement>('[data-variant-value]').forEach((btn) => {
+      btn.classList.toggle('is-current', btn.dataset.variantValue === current);
     });
-    applyActiveStates();
-  })();
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-variant-value]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.variantValue!;
+      document.documentElement.setAttribute('data-variant', value);
+      try {
+        localStorage.setItem('unsigned-variant', value);
+      } catch {}
+      markCurrent();
+    });
+  });
+  markCurrent();
 </script>

@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Claude Code session artifacts
+.claude/scheduled_tasks.lock
+
+# Figma-Make-Designquelle (eigenes Projekt, nicht Teil des Astro-Builds)
+design/

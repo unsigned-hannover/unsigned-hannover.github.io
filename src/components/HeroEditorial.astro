@@ -1,0 +1,52 @@
+---
+import { getEntry } from 'astro:content';
+
+const stats = await getEntry('stats', 'stats');
+const items = [
+  [String(stats?.data.events ?? ''), 'Veranstaltungen'],
+  [stats?.data.listeners ?? '', 'Hörer·innen'],
+  [stats?.data.guests ?? '', 'Gäste'],
+];
+---
+
+<section class="ed-hero">
+  <div class="ed-hero-bg">
+    <!-- Platzhalterfoto, lokal ausgeliefert (kein externer Request). Vor Go-Live durch eigenes Vereinsfoto ersetzen. -->
+    <img src="/img/hero-placeholder.jpg" alt="" width="1600" height="1000" />
+  </div>
+
+  <div class="ed-hero-accent"></div>
+  <div class="ed-hero-ghost" aria-hidden="true">UNS.</div>
+
+  <div class="ed-hero-body">
+    <div class="inner">
+      <p class="ed-eyebrow">Kulturverein · Hannover</p>
+      <h1>
+        Bar Nights.<br />
+        Open Decks.<br />
+        <span class="accent">Parties.</span>
+      </h1>
+      <p class="ed-hero-lead">
+        UNSIGNED. ist ein Kulturverein aus Hannover — wir machen Bar Nights, Open Decks Abende und Parties. Dazu kommt
+        unser Radio-Programm, das alle zwei Wochen auf SoundCloud erscheint.
+      </p>
+      <div class="ed-btn-row">
+        <a href="#termine" class="ed-btn">Kommende Termine</a>
+        <a href="/radio/" class="ed-btn ed-btn-ghost">UNSIGNED.RADIO →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ed-stats">
+    <div class="inner">
+      {
+        items.map(([n, l]) => (
+          <div class="ed-stat">
+            <span class="n">{n}</span>
+            <span class="l">{l}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,16 +1,70 @@
 ---
 const year = new Date().getFullYear();
+
+const navLinks = [
+  { href: '/veranstaltungen/', label: 'Veranstaltungen' },
+  { href: '/radio/', label: 'Radio' },
+  { href: '/kulturverein/', label: 'Kulturverein' },
+  { href: '/mitmachen/', label: 'Mitmachen' },
+];
 ---
 
-<footer class="site-footer">
-  <div class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-10 text-sm sm:flex-row sm:items-center sm:justify-between">
-    <p>&copy; {year} Kulturverein UNSIGNED. e.V.</p>
+<footer class="plate">
+  <!-- Signal: Terminal-Fenster -->
+  <div class="v-signal">
+    <div class="module-label"><span class="idx">MODULE_05</span> KONTAKT / TRANSMISSION END</div>
 
-    <div class="flex items-center gap-4">
-      <a href="https://www.instagram.com/unsigned.hannover/" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="mailto:unsignedhannover@gmail.com">E-Mail</a>
-      <a href="/impressum/">Impressum</a>
-      <a href="/datenschutzerklaerung/">Datenschutz</a>
+    <div class="term hud">
+      <div class="term-bar">
+        <i></i><i></i><i></i>
+        <span style="margin-left:8px;font-size:10px;color:var(--dim);">unsigned@hannover:~$</span>
+      </div>
+      <div class="term-body">
+        <div><span class="p">&gt;</span> ig: <a href="https://www.instagram.com/unsigned.hannover/" target="_blank" rel="noopener noreferrer">@unsigned.hannover</a></div>
+        <div><span class="p">&gt;</span> mail: <a href="mailto:unsignedhannover@gmail.com">unsignedhannover@gmail.com</a></div>
+        <div><span class="p">&gt;</span> loc: Platzbar, Hannover, DE</div>
+        <div><span class="p">&gt;</span> verein: <a href="/impressum/">Impressum</a> · <a href="/datenschutzerklaerung/">Datenschutz</a></div>
+        <div><span class="p">&gt;</span> status: mitglieder gesucht<span class="cursor-blink"></span></div>
+      </div>
     </div>
+  </div>
+
+  <!-- Editorial: klassisches Spalten-Raster -->
+  <div class="v-editorial ed-footer">
+    <div class="ed-foot-grid">
+      <div class="ed-foot-brand">
+        <p class="ed-foot-logo">UNSIGNED<span class="dot">.</span></p>
+        <p class="ed-foot-note">Gemeinnütziger Kulturverein.<br />Hannover.</p>
+      </div>
+
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          {navLinks.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="mailto:unsignedhannover@gmail.com">unsignedhannover@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/unsigned.hannover/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li>Platzbar, Hannover</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Rechtliches</h4>
+        <ul>
+          <li><a href="/impressum/">Impressum</a></li>
+          <li><a href="/datenschutzerklaerung/">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <span><b>KULTURVEREIN UNSIGNED. e.V.</b> — HANNOVER, DE — © {year}</span>
+    <span>GEMEINNÜTZIGER KULTURVEREIN — TECH HOUSE / TECHNO</span>
   </div>
 </footer>

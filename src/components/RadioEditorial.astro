@@ -1,0 +1,54 @@
+---
+interface Props {
+  title: string;
+  soundcloudUrl: string;
+}
+
+const { title, soundcloudUrl } = Astro.props;
+const embedSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(soundcloudUrl)}&color=%23f25e0d&auto_play=true`;
+
+// Deterministische Pseudo-Waveform (kein Math.random -> identisches Server/Client-Markup).
+const bars = Array.from({ length: 60 }, (_, i) => 22 + Math.round((Math.sin(i * 0.4) * 0.5 + 0.5) * 55 + (i % 7) * 3));
+---
+
+<div class="ed-radio-grid">
+  <div>
+    <p class="ed-eyebrow">Alle zwei Wochen</p>
+    <h2 class="ed-h2">
+      UNSIGNED.<br /><span class="accent">Radio</span>
+    </h2>
+    <p class="prose" style="margin-top:24px;">
+      Unser Radio-Programm erscheint alle zwei Wochen auf SoundCloud. Lokale DJs, neue Mixes, kein Mainstream.
+    </p>
+    <p class="prose" style="margin-top:16px;">
+      Du willst selbst eine Show machen oder einen Mix einreichen? Schreib uns über das Kontaktformular — wir freuen uns
+      über neue Gesichter.
+    </p>
+    <div class="ed-btn-row" style="margin-top:32px;">
+      <a href="/radio/" class="ed-btn">Alle Folgen →</a>
+      <a href="/mitmachen/" class="ed-btn ed-btn-ghost">Mitmachen</a>
+    </div>
+  </div>
+
+  <div class="ed-media" data-embed-src={embedSrc}>
+    <!-- Platzhalterfoto, lokal ausgeliefert. Vor Go-Live durch eigenes Foto ersetzen. -->
+    <img src="/img/radio-placeholder.jpg" alt="" width="800" height="600" />
+    <div class="ed-wave" aria-hidden="true">
+      {bars.map((h) => <i style={`height:${h}%`}></i>)}
+    </div>
+    <button type="button" class="ed-btn ed-play" style="position:absolute; z-index:30; left:20px; top:20px;" aria-label={`${title} laden und abspielen`}>
+      ▶ Folge abspielen
+    </button>
+  </div>
+</div>
+
+<script>
+  // DSGVO: SoundCloud lädt erst nach Klick.
+  document.querySelectorAll<HTMLElement>('.ed-media[data-embed-src]').forEach((wrapper) => {
+    wrapper.querySelector('.ed-play')?.addEventListener('click', () => {
+      const src = wrapper.dataset.embedSrc;
+      if (!src) return;
+      wrapper.innerHTML = `<iframe class="player-frame" style="height:400px;" src="${src}" loading="lazy" allow="autoplay"></iframe>`;
+    });
+  });
+</script>

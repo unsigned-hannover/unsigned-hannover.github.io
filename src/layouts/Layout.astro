@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Atmosphere from '../components/Atmosphere.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -17,11 +18,12 @@ const pageTitle = `${title} · UNSIGNED. Hannover`;
   <head>
     <meta charset="UTF-8" />
     <script is:inline>
-      // Verhindert Flackern: gespeicherte Design-Variante vor dem ersten Rendern anwenden.
+      // Verhindert Flackern: gespeicherte Design-Variante vor dem ersten Rendern setzen.
       try {
-        var t = localStorage.getItem('unsigned-theme');
-        if (t) document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {}
+        document.documentElement.setAttribute('data-variant', localStorage.getItem('unsigned-variant') || 'signal');
+      } catch (e) {
+        document.documentElement.setAttribute('data-variant', 'signal');
+      }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -36,9 +38,10 @@ const pageTitle = `${title} · UNSIGNED. Hannover`;
 
     <meta name="twitter:card" content="summary" />
   </head>
-  <body class="flex min-h-screen flex-col bg-white text-neutral-900">
+  <body>
+    <Atmosphere />
     <Header />
-    <main class="flex-1">
+    <main>
       <slot />
     </main>
     <Footer />

@@ -6,40 +6,42 @@ import Layout from '../layouts/Layout.astro';
   title="Mitmachen"
   description="Was sind Open Decks, was macht der Kulturverein UNSIGNED. und wie sieht die Vereinsarbeit konkret aus?"
 >
-  <section class="band">
-    <div class="mx-auto max-w-3xl px-4 py-16">
-      <h1 class="brand-heading text-3xl sm:text-4xl">Mitmachen</h1>
-      <p class="mt-4 opacity-90">
-        Neu in der Szene oder einfach neugierig, was hinter UNSIGNED. steckt? Hier findest du die Basics – bevor du
-        beim nächsten Open Decks auflegst oder Mitglied wirst.
-      </p>
-    </div>
+  <section class="hero page-hero">
+    <h1 class="hero-wordmark glitch" data-text="MITMACHEN">MITMACHEN<span class="dot">.</span></h1>
+    <p class="hero-sub">
+      Neu in der Szene oder einfach neugierig, was hinter UNSIGNED. steckt? Hier findest du die Basics — bevor du beim
+      nächsten Open Decks auflegst oder Mitglied wirst.
+    </p>
   </section>
 
-  <section class="mx-auto max-w-3xl px-4 py-16">
-    <h2 class="brand-heading text-xl text-neutral-900">Was sind Open Decks?</h2>
-    <p class="mt-4 text-neutral-700">
-      Open Decks sind unser offenes Format: Jede:r kann auflegen, egal ob erster Mix oder jahrelange Erfahrung. Du
-      trägst dich vorher in einen Zeitslot ein, Equipment (Controller/CDJs/Mixer) steht vor Ort bereit. Die
-      Atmosphäre ist entspannt und fehlerverzeihend – es geht ums Ausprobieren und Kennenlernen, nicht um Perfektion.
-      Genre-technisch bewegen wir uns meist zwischen Tech House und Techno, aber Open Decks sind bewusst offen für
-      alles, was in diese Richtung geht.
+  <section class="plate">
+    <div class="module-label"><span class="idx">MODULE_A</span> WAS SIND OPEN DECKS?</div>
+    <p class="prose">
+      Open Decks sind unser offenes Format: Jede:r kann auflegen, egal ob erster Mix oder jahrelange Erfahrung. Du trägst
+      dich vorher in einen Zeitslot ein, Equipment (Controller/CDJs/Mixer) steht vor Ort bereit. Die Atmosphäre ist
+      entspannt und fehlerverzeihend — es geht ums Ausprobieren und Kennenlernen, nicht um Perfektion. Genre-technisch
+      bewegen wir uns meist zwischen Tech House und Techno, aber Open Decks sind bewusst offen für alles, was in diese
+      Richtung geht.
     </p>
+  </section>
 
-    <h2 class="brand-heading mt-12 text-xl text-neutral-900">Was macht der Verein?</h2>
-    <p class="mt-4 text-neutral-700">
+  <section class="plate">
+    <div class="module-label"><span class="idx">MODULE_B</span> WAS MACHT DER VEREIN?</div>
+    <p class="prose">
       UNSIGNED. ist ein gemeinnütziger Kulturverein. Wir organisieren Events (Open Decks, Bar Nights, größere
-      Tagesveranstaltungen), produzieren den Podcast UNSIGNED.RADIO mit lokalen Artists und bauen darüber eine
-      Community für elektronische Musik in Hannover auf – ein Ort zum Auflegen, Zuhören und Kennenlernen, unabhängig
-      davon, ob du schon aktiv in der Szene bist oder erst reinschnuppern willst.
+      Tagesveranstaltungen), produzieren den Podcast UNSIGNED.RADIO mit lokalen Artists und bauen darüber eine Community
+      für elektronische Musik in Hannover auf — ein Ort zum Auflegen, Zuhören und Kennenlernen, unabhängig davon, ob du
+      schon aktiv in der Szene bist oder erst reinschnuppern willst.
     </p>
+  </section>
 
-    <h2 class="brand-heading mt-12 text-xl text-neutral-900">Wie sieht die Vereinsarbeit konkret aus?</h2>
-    <p class="mt-4 text-neutral-700">
+  <section class="plate">
+    <div class="module-label"><span class="idx">MODULE_C</span> VEREINSARBEIT KONKRET</div>
+    <p class="prose" style="margin-bottom:18px;">
       Hinter jedem Abend steckt ehrenamtliche Arbeit von Mitgliedern. Je nachdem, was dir liegt, kannst du dich zum
       Beispiel einbringen bei:
     </p>
-    <ul class="mt-4 space-y-2 text-neutral-700">
+    <ul class="prose" style="list-style:none; padding:0; display:flex; flex-direction:column; gap:8px;">
       <li>· Booking &amp; Line-up-Planung für Events</li>
       <li>· Auf- und Abbau sowie Technik/Sound vor Ort</li>
       <li>· Social Media, Promo und Grafik für Ankündigungen</li>
@@ -48,17 +50,18 @@ import Layout from '../layouts/Layout.astro';
       <li>· Kontakt zu Locations wie der Platzbar</li>
       <li>· Vereinsverwaltung: Kasse, Mitgliederverwaltung, Mitgliederversammlung</li>
     </ul>
-    <p class="mt-4 text-sm text-neutral-400">
-      Hinweis: Diese Übersicht ist eine allgemeine Einordnung typischer Vereinsaufgaben – für den genauen aktuellen
-      Stand (wer macht was, wo wird gerade Hilfe gebraucht) am besten direkt beim Vorstand nachfragen.
+    <p class="prose" style="margin-top:18px; font-size:11px;">
+      Hinweis: Diese Übersicht ist eine allgemeine Einordnung typischer Vereinsaufgaben — für den genauen aktuellen Stand
+      (wer macht was, wo wird gerade Hilfe gebraucht) am besten direkt beim Vorstand nachfragen.
     </p>
+  </section>
 
-    <div class="mt-12 border border-brand/30 bg-brand/5 p-6 sm:p-8">
-      <h2 class="brand-heading text-xl text-neutral-900">Lust bekommen?</h2>
-      <p class="mt-2 text-neutral-600">
-        Schau beim nächsten <a href="/veranstaltungen/" class="text-brand hover:text-brand-dark">Open Decks</a> vorbei
-        oder werde direkt <a href="/kulturverein/#mitglied-werden" class="text-brand hover:text-brand-dark">Mitglied</a>.
-      </p>
-    </div>
+  <section class="plate cta-plate">
+    <div class="module-label"><span class="idx">MODULE_D</span> LUST BEKOMMEN?</div>
+    <h2>MACH MIT<span class="dot">.</span></h2>
+    <p>
+      Schau beim nächsten Open Decks vorbei oder werde direkt Mitglied.
+    </p>
+    <a class="cta-btn" href="/kulturverein/#mitglied-werden">→ MITGLIED WERDEN</a>
   </section>
 </Layout>

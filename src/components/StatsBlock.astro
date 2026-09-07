@@ -3,19 +3,34 @@ import { getEntry } from 'astro:content';
 
 const stats = await getEntry('stats', 'stats');
 const items = [
-  { value: stats?.data.events, label: 'Events' },
-  { value: stats?.data.listeners, label: 'Hörer:innen' },
-  { value: stats?.data.guests, label: 'Gäste' },
+  { value: String(stats?.data.events ?? ''), label: 'Events geschmissen', id: 'spark1' },
+  { value: stats?.data.listeners ?? '', label: 'Radio-Hörer:innen', id: 'spark2' },
+  { value: stats?.data.guests ?? '', label: 'Gäste auf der Fläche', id: 'spark3' },
 ];
 ---
 
-<div class="grid grid-cols-3 gap-4 text-center">
+<div class="stats-grid">
   {
     items.map((item) => (
-      <div>
-        <p class="text-3xl font-extrabold sm:text-4xl" style="color: var(--fg-band)">{item.value}</p>
-        <p class="label-mono mt-1 text-xs font-semibold uppercase tracking-wide opacity-70 sm:text-sm" style="color: var(--fg-band)">{item.label}</p>
+      <div class="stat hud">
+        <div class="num glitch" data-text={item.value}>
+          {item.value}
+        </div>
+        <div class="lbl">{item.label}</div>
+        <div class="spark" data-spark></div>
       </div>
     ))
   }
 </div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-spark]').forEach((el) => {
+    let html = '';
+    const n = 24;
+    for (let i = 0; i < n; i++) {
+      const h = 20 + Math.floor(Math.random() * 80);
+      html += `<i style="height:${h}%"></i>`;
+    }
+    el.innerHTML = html;
+  });
+</script>
