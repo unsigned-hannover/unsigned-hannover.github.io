@@ -11,38 +11,38 @@ const { formType, heading, intro } = Astro.props;
 const formId = `form-${formType}`;
 ---
 
-<div class="rounded-xl border border-white/10 bg-neutral-900 p-5 sm:p-6">
-  <h3 class="text-lg font-bold text-white">{heading}</h3>
-  {intro && <p class="mt-1 text-sm text-white/60">{intro}</p>}
+<div class="card bg-neutral-50 p-5 sm:p-6">
+  <h3 class="brand-heading text-lg text-neutral-900">{heading}</h3>
+  {intro && <p class="mt-1 text-sm text-neutral-500">{intro}</p>}
 
   <form id={formId} class="mt-4 space-y-4" data-form-type={formType}>
     <div>
-      <label for={`${formId}-name`} class="mb-1 block text-sm font-semibold text-white/80">Name</label>
+      <label for={`${formId}-name`} class="mb-1 block text-sm font-semibold text-neutral-700">Name</label>
       <input
         id={`${formId}-name`}
         name="name"
         type="text"
         required
-        class="w-full rounded-lg border border-white/15 bg-neutral-950 px-3 py-2 text-white placeholder-white/30 focus:border-brand focus:outline-none"
+        class="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 placeholder-neutral-400 focus:border-brand focus:outline-none"
       />
     </div>
 
     <div>
-      <label for={`${formId}-email`} class="mb-1 block text-sm font-semibold text-white/80">E-Mail</label>
+      <label for={`${formId}-email`} class="mb-1 block text-sm font-semibold text-neutral-700">E-Mail</label>
       <input
         id={`${formId}-email`}
         name="email"
         type="email"
         required
-        class="w-full rounded-lg border border-white/15 bg-neutral-950 px-3 py-2 text-white placeholder-white/30 focus:border-brand focus:outline-none"
+        class="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 placeholder-neutral-400 focus:border-brand focus:outline-none"
       />
     </div>
 
     {
       formType === 'membership' && (
         <fieldset>
-          <legend class="mb-1 block text-sm font-semibold text-white/80">Mitgliedschaft</legend>
-          <div class="flex gap-4 text-sm text-white/80">
+          <legend class="mb-1 block text-sm font-semibold text-neutral-700">Mitgliedschaft</legend>
+          <div class="flex gap-4 text-sm text-neutral-700">
             <label class="flex items-center gap-2">
               <input type="radio" name="membershipType" value="ordentlich" checked class="accent-brand" />
               Ordentliches Mitglied
@@ -57,13 +57,13 @@ const formId = `form-${formType}`;
     }
 
     <div>
-      <label for={`${formId}-message`} class="mb-1 block text-sm font-semibold text-white/80">Nachricht</label>
+      <label for={`${formId}-message`} class="mb-1 block text-sm font-semibold text-neutral-700">Nachricht</label>
       <textarea
         id={`${formId}-message`}
         name="message"
         rows="4"
         required
-        class="w-full rounded-lg border border-white/15 bg-neutral-950 px-3 py-2 text-white placeholder-white/30 focus:border-brand focus:outline-none"
+        class="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 placeholder-neutral-400 focus:border-brand focus:outline-none"
       ></textarea>
     </div>
 
@@ -73,7 +73,7 @@ const formId = `form-${formType}`;
       <input id={`${formId}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
-    <label class="flex items-start gap-2 text-xs text-white/60">
+    <label class="flex items-start gap-2 text-xs text-neutral-500">
       <input type="checkbox" required class="mt-0.5 accent-brand" />
       <span>
         Ich habe die <a href="/datenschutzerklaerung/" class="underline hover:text-brand">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage einverstanden.
@@ -82,7 +82,7 @@ const formId = `form-${formType}`;
 
     <button
       type="submit"
-      class="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-50"
+      class="btn-solid px-5 py-2.5 text-sm font-bold transition-colors disabled:opacity-50"
     >
       Absenden
     </button>

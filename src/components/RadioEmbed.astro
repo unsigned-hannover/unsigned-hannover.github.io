@@ -9,7 +9,7 @@ const { title, soundcloudUrl } = Astro.props;
 const embedSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(soundcloudUrl)}&color=%23f25e0d&auto_play=true`;
 ---
 
-<div class="soundcloud-embed rounded-xl border border-white/10 bg-neutral-900 p-4" data-embed-src={embedSrc}>
+<div class="soundcloud-embed card bg-white p-4" data-embed-src={embedSrc}>
   <button
     type="button"
     class="load-embed flex w-full items-center gap-3 text-left"
@@ -21,8 +21,8 @@ const embedSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(soun
       </svg>
     </span>
     <span class="min-w-0">
-      <span class="block truncate font-bold text-white">{title}</span>
-      <span class="text-xs text-white/50">Player von SoundCloud laden &amp; abspielen</span>
+      <span class="block truncate font-bold text-neutral-900">{title}</span>
+      <span class="text-xs text-neutral-500">Player von SoundCloud laden &amp; abspielen</span>
     </span>
   </button>
 </div>

@@ -23,6 +23,7 @@ collections:
       - { label: Poster (optional), name: poster, widget: image, required: false }
       - { label: Ticket-Link (optional), name: ticketUrl, widget: string, required: false }
       - { label: Beschreibung, name: description, widget: text, required: false }
+      - { label: Sichtbar, name: hidden, widget: boolean, default: false, hint: "Aktiviert = Event wird ausgeblendet", required: false }
 
   - name: radio
     label: Radio-Folgen

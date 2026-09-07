@@ -13,8 +13,8 @@ const items = [
   {
     items.map((item) => (
       <div>
-        <p class="text-3xl font-extrabold text-brand sm:text-4xl">{item.value}</p>
-        <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-white/50 sm:text-sm">{item.label}</p>
+        <p class="text-3xl font-extrabold sm:text-4xl" style="color: var(--fg-band)">{item.value}</p>
+        <p class="label-mono mt-1 text-xs font-semibold uppercase tracking-wide opacity-70 sm:text-sm" style="color: var(--fg-band)">{item.label}</p>
       </div>
     ))
   }

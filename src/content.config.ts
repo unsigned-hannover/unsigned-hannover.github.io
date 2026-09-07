@@ -11,6 +11,7 @@ const events = defineCollection({
     poster: z.string().optional(),
     ticketUrl: z.string().url().optional(),
     description: z.string().optional(),
+    hidden: z.boolean().default(false),
   }),
 });
 

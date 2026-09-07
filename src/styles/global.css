@@ -4,15 +4,258 @@
 @import "@fontsource/mulish/600.css";
 @import "@fontsource/mulish/700.css";
 @import "@fontsource/mulish/800.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/700.css";
 
 @theme {
   --font-sans: "Mulish", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --color-brand: #f25e0d;
   --color-brand-light: #fe8667;
   --color-brand-dark: #c94a09;
+
+  /* Keine weichen Rundungen (Design-Feedback) – gilt für alle vier Varianten. rounded-full bleibt unberührt. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+}
+
+/* ============================================================
+   Design-Varianten (temporärer Vergleichs-Switcher im Header).
+   Seiteninhalt (weißer Grund, dunkler Text) bleibt in allen vier
+   Varianten identisch lesbar – nur Chrome/Bänder/Karten/Typo variieren.
+   ============================================================ */
+
+:root,
+[data-theme="poster"] {
+  --bg-header: #0a0a0a;
+  --fg-header: #ffffff;
+  --fg-header-muted: rgba(255, 255, 255, 0.75);
+  --border-header-w: 1px;
+  --border-header-color: rgba(255, 255, 255, 0.1);
+
+  --bg-band: var(--color-brand);
+  --fg-band: #ffffff;
+  --band-texture-image: radial-gradient(rgba(0, 0, 0, 0.14) 1.5px, transparent 1.5px);
+  --band-texture-size: 10px 10px;
+  --band-border-w: 0px;
+  --band-border-color: transparent;
+
+  --border-card: #000000;
+  --border-w-card: 2px;
+  --card-shadow: none;
+
+  --heading-transform: uppercase;
+  --heading-tracking: 0.02em;
+  --heading-weight: 800;
+  --font-label: var(--font-sans);
+
+  --btn-primary-bg: #ffffff;
+  --btn-primary-fg: var(--color-brand);
+  --btn-primary-hover-bg: #f2f2f2;
+  --btn-primary-hover-fg: var(--color-brand);
+  --btn-glow: none;
+
+  /* Auf dem orangen Band braucht der Logo-Punkt einen dunklen statt orangen Farbwert, sonst verschwindet er. */
+  --hero-dot-color: #0a0a0a;
+}
+
+[data-theme="mono"] {
+  --bg-header: #ffffff;
+  --fg-header: #111111;
+  --fg-header-muted: #6b6b6b;
+  --border-header-w: 2px;
+  --border-header-color: #111111;
+
+  --bg-band: #111111;
+  --fg-band: #ffffff;
+  --band-texture-image: none;
+  --band-texture-size: auto;
+  --band-border-w: 0px;
+  --band-border-color: transparent;
+
+  --border-card: #111111;
+  --border-w-card: 1px;
+  --card-shadow: none;
+
+  --heading-transform: none;
+  --heading-tracking: -0.01em;
+  --heading-weight: 800;
+  --font-label: var(--font-mono);
+
+  --btn-primary-bg: var(--color-brand);
+  --btn-primary-fg: #ffffff;
+  --btn-primary-hover-bg: var(--color-brand-dark);
+  --btn-primary-hover-fg: #ffffff;
+  --btn-glow: none;
+}
+
+[data-theme="blackout"] {
+  --bg-header: #000000;
+  --fg-header: #ffffff;
+  --fg-header-muted: rgba(255, 255, 255, 0.7);
+  --border-header-w: 1px;
+  --border-header-color: rgba(242, 94, 13, 0.35);
+
+  --bg-band: #0a0a0a;
+  --fg-band: #ffffff;
+  --band-texture-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.045) 0px,
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  --band-texture-size: auto;
+  --band-border-w: 1px;
+  --band-border-color: rgba(242, 94, 13, 0.4);
+
+  --border-card: var(--color-brand);
+  --border-w-card: 1px;
+  --card-shadow: 0 0 18px rgba(242, 94, 13, 0.2);
+
+  --heading-transform: uppercase;
+  --heading-tracking: 0.08em;
+  --heading-weight: 800;
+  --font-label: var(--font-mono);
+
+  --btn-primary-bg: var(--color-brand);
+  --btn-primary-fg: #ffffff;
+  --btn-primary-hover-bg: var(--color-brand-dark);
+  --btn-primary-hover-fg: #ffffff;
+  --btn-glow: 0 0 20px rgba(242, 94, 13, 0.55);
+}
+
+[data-theme="flyer"] {
+  --bg-header: #ffffff;
+  --fg-header: #000000;
+  --fg-header-muted: #4a4a4a;
+  --border-header-w: 3px;
+  --border-header-color: #000000;
+
+  --bg-band: #ffffff;
+  --fg-band: #000000;
+  --band-texture-image: none;
+  --band-texture-size: auto;
+  --band-border-w: 3px;
+  --band-border-color: #000000;
+
+  --border-card: #000000;
+  --border-w-card: 3px;
+  --card-shadow: none;
+
+  --heading-transform: uppercase;
+  --heading-tracking: 0em;
+  --heading-weight: 800;
+  --font-label: var(--font-mono);
+
+  --btn-primary-bg: #000000;
+  --btn-primary-fg: #ffffff;
+  --btn-primary-hover-bg: var(--color-brand);
+  --btn-primary-hover-fg: #000000;
+  --btn-glow: none;
+}
+
+/* Seitenweites Papier-Raster nur bei "flyer" – rein dekorativ, beeinträchtigt Lesbarkeit nicht. */
+[data-theme="flyer"] body {
+  background-image:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 body {
   font-family: var(--font-sans);
+}
+
+/* ---- Generische, themenfähige Bausteine ---- */
+
+.site-header {
+  background-color: var(--bg-header);
+  border-bottom-width: var(--border-header-w);
+  border-bottom-color: var(--border-header-color);
+  border-bottom-style: solid;
+}
+
+.site-header-link {
+  color: var(--fg-header-muted);
+}
+.site-header-link:hover {
+  color: var(--color-brand);
+}
+.site-header-link.is-active {
+  color: var(--color-brand);
+}
+
+.site-footer {
+  background-color: var(--bg-header);
+  color: var(--fg-header-muted);
+  border-top-width: var(--border-header-w);
+  border-top-color: var(--border-header-color);
+  border-top-style: solid;
+}
+.site-footer a:hover {
+  color: var(--color-brand);
+}
+
+.band {
+  background-color: var(--bg-band);
+  color: var(--fg-band);
+  background-image: var(--band-texture-image);
+  background-size: var(--band-texture-size);
+  border-top: var(--band-border-w) solid var(--band-border-color);
+  border-bottom: var(--band-border-w) solid var(--band-border-color);
+}
+
+.card {
+  border-style: solid;
+  border-width: var(--border-w-card);
+  border-color: var(--border-card);
+  box-shadow: var(--card-shadow);
+}
+
+.brand-heading {
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-tracking);
+  font-weight: var(--heading-weight);
+}
+
+.label-mono {
+  font-family: var(--font-label);
+}
+
+.brand-dot {
+  color: var(--hero-dot-color, var(--color-brand));
+}
+
+.btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  box-shadow: var(--btn-glow);
+}
+.btn-primary:hover {
+  background-color: var(--btn-primary-hover-bg);
+  color: var(--btn-primary-hover-fg);
+}
+
+.btn-outline {
+  border: 1px solid var(--fg-band);
+  color: var(--fg-band);
+  background-color: transparent;
+}
+.btn-outline:hover {
+  background-color: color-mix(in srgb, var(--fg-band) 12%, transparent);
+}
+
+.btn-solid {
+  background-color: var(--color-brand);
+  color: #ffffff;
+  box-shadow: var(--btn-glow);
+}
+.btn-solid:hover {
+  background-color: var(--color-brand-dark);
 }
