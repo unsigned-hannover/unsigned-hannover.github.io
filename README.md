@@ -1,43 +1,67 @@
-# Astro Starter Kit: Minimal
+# unsignedhannover.com
+
+Website des Kulturverein UNSIGNED. e.V. (Hannover). Statisch gebaut mit [Astro](https://astro.build) +
+[Tailwind CSS](https://tailwindcss.com), Content über [Decap CMS](https://decapcms.org) pflegbar, Hosting über
+GitHub Pages.
+
+## Projektstruktur
+
+```
+src/
+  content.config.ts        Schema für Events, Radio-Folgen, Statistiken
+  content/
+    events/*.md             Ein Event pro Datei (Titel, Datum, Ort, ...)
+    radio/*.md               Eine Podcast-Folge pro Datei (Titel, SoundCloud-Link, ...)
+    site/stats.json          Zahlen für den Statistik-Block auf der Startseite
+  components/                Wiederverwendbare Bausteine (Header, EventCard, Formular, ...)
+  layouts/Layout.astro        Grundgerüst (Head, Header, Footer) für alle Seiten
+  pages/                      Eine Datei = eine Route (/, /radio/, /kulturverein/, ...)
+  styles/global.css           Tailwind-Setup, Brand-Farben, Font-Einbindung
+public/
+  admin/                      Decap-CMS-Oberfläche unter /admin
+worker/
+  mail-relay/                 Cloudflare Worker: Formulare -> E-Mail (siehe eigenes README)
+  oauth-provider/              Cloudflare Worker: GitHub-Login fürs CMS (siehe eigenes README)
+```
+
+## Lokal entwickeln
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev        # http://localhost:4321
+npm run build       # Production-Build nach ./dist
+npm run preview     # Build lokal ansehen
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Content pflegen
 
-## 🚀 Project Structure
+**Ohne CMS:** Dateien in `src/content/events/` bzw. `src/content/radio/` anlegen/bearbeiten (Markdown mit
+Frontmatter), committen, pushen — die Seite baut sich automatisch neu.
 
-Inside of your Astro project, you'll see the following folders and files:
+**Mit CMS:** Unter `/admin` auf der deployten Seite einloggen (GitHub-Login). Voraussetzung: der OAuth-Worker aus
+`worker/oauth-provider/` ist deployt und in `public/admin/config.yml` unter `backend.base_url` eingetragen, und
+`backend.repo` in derselben Datei zeigt auf das echte GitHub-Repo.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Formulare aktivieren
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Ohne konfigurierten Endpoint zeigen die Formulare eine Fallback-Meldung ("bitte per E-Mail wenden"). Zum Aktivieren:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. `worker/mail-relay/` deployen (siehe dortiges README).
+2. Die ausgegebene Worker-URL als `PUBLIC_FORM_ENDPOINT` in `.env` (lokal) und als Repository-Variable
+   `PUBLIC_FORM_ENDPOINT` unter GitHub → Settings → Secrets and variables → Actions → Variables eintragen (wird vom
+   Deploy-Workflow in den Production-Build eingebaut).
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Deployment
 
-## 🧞 Commands
+Push auf `main` löst `.github/workflows/deploy.yml` aus: Build + Deploy nach GitHub Pages. Einmalig in den
+Repo-Settings unter „Pages" die Quelle auf „GitHub Actions" stellen.
 
-All commands are run from the root of the project, from a terminal:
+`astro.config.mjs` → `site` muss zur tatsächlichen Pages-URL passen (aktuell Platzhalter
+`https://unsigned-hannover.github.io` — am einfachsten das Repo so nennen, dann läuft die Seite ohne Unterpfad).
+Domain-Umzug auf unsignedhannover.com später per CNAME, ohne Codeänderung.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Rechtstexte
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Impressum und Datenschutzerklärung (`src/pages/impressum.astro`, `src/pages/datenschutzerklaerung.astro`) wurden
+inhaltlich vom bisherigen Baukasten übernommen bzw. an die neue technische Basis angepasst. Vor Go-Live vom
+Vorstand / einer Rechtsberatung final gegenlesen lassen.

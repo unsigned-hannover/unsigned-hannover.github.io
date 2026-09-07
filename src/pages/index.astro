@@ -1,17 +1,109 @@
 ---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import EventCard from '../components/EventCard.astro';
+import RadioEmbed from '../components/RadioEmbed.astro';
+import StatsBlock from '../components/StatsBlock.astro';
+import ContactForm from '../components/ContactForm.astro';
 
+const now = new Date();
+const allEvents = await getCollection('events');
+const upcomingEvents = allEvents
+  .filter((event) => event.data.date >= now)
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
+  .slice(0, 5);
+
+const allRadio = await getCollection('radio');
+const latestEpisode = allRadio.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  title="Start"
+  description="UNSIGNED. ist ein Kulturverein aus Hannover für elektronische Musik: Events, Podcast und eine Community zum Mitmachen."
+>
+  <section class="border-b border-white/10 bg-gradient-to-b from-brand/20 to-neutral-950">
+    <div class="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+      <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+        UNSIGNED<span class="text-brand">.</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-lg text-white/80">
+        Kulturverein für elektronische Musik in Hannover. Wir veranstalten Events, produzieren einen Podcast und
+        bauen eine Community zum Vernetzen und Austauschen auf.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="#termine" class="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-dark">
+          Nächste Termine
+        </a>
+        <a
+          href="https://www.instagram.com/unsigned.hannover/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-lg border border-white/20 px-5 py-2.5 text-sm font-bold text-white hover:border-brand hover:text-brand"
+        >
+          Instagram
+        </a>
+      </div>
+
+      <div class="mt-12">
+        <StatsBlock />
+      </div>
+    </div>
+  </section>
+
+  <section id="termine" class="mx-auto max-w-5xl px-4 py-16">
+    <h2 class="text-2xl font-extrabold text-white">Termine</h2>
+    <div class="mt-6 space-y-4">
+      {
+        upcomingEvents.length > 0 ? (
+          upcomingEvents.map((event) => (
+            <EventCard
+              title={event.data.title}
+              date={event.data.date}
+              location={event.data.location}
+              description={event.data.description}
+              ticketUrl={event.data.ticketUrl}
+            />
+          ))
+        ) : (
+          <p class="text-white/60">Aktuell keine Termine geplant – schau bald wieder vorbei.</p>
+        )
+      }
+    </div>
+    <p class="mt-6 text-sm text-white/60">
+      Alle Announcements gibt's auch im{' '}
+      <a href="https://www.instagram.com/unsigned.hannover/" class="text-brand hover:text-brand-light">WhatsApp-Kanal</a>.
+    </p>
+  </section>
+
+  <section class="border-t border-white/10 bg-neutral-900/40">
+    <div class="mx-auto max-w-5xl px-4 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <h2 class="text-2xl font-extrabold text-white">UNSIGNED.RADIO</h2>
+        <a href="/radio/" class="text-sm font-semibold text-brand hover:text-brand-light">Alle Folgen →</a>
+      </div>
+      <p class="mt-2 text-white/70">Unser zweiwöchentlicher Podcast mit lokalen Artists.</p>
+      {
+        latestEpisode && (
+          <div class="mt-6">
+            <RadioEmbed title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} />
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-16">
+    <div class="rounded-2xl border border-brand/30 bg-brand/10 p-6 sm:p-8">
+      <h2 class="text-2xl font-extrabold text-white">Lust mitzumachen? Mitglied werden!</h2>
+      <p class="mt-2 max-w-2xl text-white/70">
+        Wir suchen ordentliche und fördernde Mitglieder, die Lust haben sich einzubringen. Mehr dazu auf der{' '}
+        <a href="/kulturverein/" class="text-brand hover:text-brand-light">Kulturverein-Seite</a>.
+      </p>
+    </div>
+  </section>
+
+  <section id="kontakt" class="mx-auto max-w-5xl px-4 pb-20">
+    <h2 class="mb-6 text-2xl font-extrabold text-white">Kontakt</h2>
+    <ContactForm formType="contact" heading="Schreib uns" />
+  </section>
+</Layout>

@@ -1,0 +1,9 @@
+name = "unsigned-oauth"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+# Secrets (per `wrangler secret put <NAME>`):
+#   GITHUB_CLIENT_ID
+#   GITHUB_CLIENT_SECRET
+# (aus einer GitHub OAuth App: https://github.com/settings/developers
+#  Authorization callback URL = https://<dein-worker>.workers.dev/callback)

@@ -1,0 +1,38 @@
+---
+// DSGVO: SoundCloud-Player lädt erst nach Klick (kein automatischer Drittanbieter-Request).
+interface Props {
+  title: string;
+  soundcloudUrl: string;
+}
+
+const { title, soundcloudUrl } = Astro.props;
+const embedSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(soundcloudUrl)}&color=%23f25e0d&auto_play=true`;
+---
+
+<div class="soundcloud-embed rounded-xl border border-white/10 bg-neutral-900 p-4" data-embed-src={embedSrc}>
+  <button
+    type="button"
+    class="load-embed flex w-full items-center gap-3 text-left"
+    aria-label={`${title} auf SoundCloud laden und abspielen`}
+  >
+    <span class="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-brand text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8 5v14l11-7z"></path>
+      </svg>
+    </span>
+    <span class="min-w-0">
+      <span class="block truncate font-bold text-white">{title}</span>
+      <span class="text-xs text-white/50">Player von SoundCloud laden &amp; abspielen</span>
+    </span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.soundcloud-embed').forEach((wrapper) => {
+    wrapper.querySelector('.load-embed')?.addEventListener('click', () => {
+      const src = wrapper.dataset.embedSrc;
+      if (!src) return;
+      wrapper.innerHTML = `<iframe class="h-[166px] w-full rounded-lg" src="${src}" loading="lazy" allow="autoplay"></iframe>`;
+    });
+  });
+</script>

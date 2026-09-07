@@ -1,0 +1,8 @@
+name = "unsigned-mail-relay"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+# Secrets (per `wrangler secret put <NAME>`), nicht hier eintragen:
+#   RESEND_API_KEY   – API-Key von https://resend.com (kostenloses Kontingent reicht für einen Verein)
+#   DESTINATION_EMAIL – z.B. unsignedhannover@gmail.com
+#   ALLOWED_ORIGIN    – z.B. https://unsigned-hannover.github.io

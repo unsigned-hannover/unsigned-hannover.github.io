@@ -1,0 +1,130 @@
+---
+// Sendet an den eigenen Cloudflare-Worker-Mail-Relay (siehe worker/README.md).
+// Kein Drittanbieter-Formularservice -> kein AVV nötig, keine dauerhafte Speicherung der Daten.
+interface Props {
+  formType: 'contact' | 'membership';
+  heading: string;
+  intro?: string;
+}
+
+const { formType, heading, intro } = Astro.props;
+const formId = `form-${formType}`;
+---
+
+<div class="rounded-xl border border-white/10 bg-neutral-900 p-5 sm:p-6">
+  <h3 class="text-lg font-bold text-white">{heading}</h3>
+  {intro && <p class="mt-1 text-sm text-white/60">{intro}</p>}
+
+  <form id={formId} class="mt-4 space-y-4" data-form-type={formType}>
+    <div>
+      <label for={`${formId}-name`} class="mb-1 block text-sm font-semibold text-white/80">Name</label>
+      <input
+        id={`${formId}-name`}
+        name="name"
+        type="text"
+        required
+        class="w-full rounded-lg border border-white/15 bg-neutral-950 px-3 py-2 text-white placeholder-white/30 focus:border-brand focus:outline-none"
+      />
+    </div>
+
+    <div>
+      <label for={`${formId}-email`} class="mb-1 block text-sm font-semibold text-white/80">E-Mail</label>
+      <input
+        id={`${formId}-email`}
+        name="email"
+        type="email"
+        required
+        class="w-full rounded-lg border border-white/15 bg-neutral-950 px-3 py-2 text-white placeholder-white/30 focus:border-brand focus:outline-none"
+      />
+    </div>
+
+    {
+      formType === 'membership' && (
+        <fieldset>
+          <legend class="mb-1 block text-sm font-semibold text-white/80">Mitgliedschaft</legend>
+          <div class="flex gap-4 text-sm text-white/80">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="membershipType" value="ordentlich" checked class="accent-brand" />
+              Ordentliches Mitglied
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="membershipType" value="foerdernd" class="accent-brand" />
+              Förderndes Mitglied
+            </label>
+          </div>
+        </fieldset>
+      )
+    }
+
+    <div>
+      <label for={`${formId}-message`} class="mb-1 block text-sm font-semibold text-white/80">Nachricht</label>
+      <textarea
+        id={`${formId}-message`}
+        name="message"
+        rows="4"
+        required
+        class="w-full rounded-lg border border-white/15 bg-neutral-950 px-3 py-2 text-white placeholder-white/30 focus:border-brand focus:outline-none"
+      ></textarea>
+    </div>
+
+    <!-- Honeypot: für Menschen unsichtbar, Bots füllen es meist aus -> einfache Spam-Filterung ohne Captcha -->
+    <div class="hidden" aria-hidden="true">
+      <label for={`${formId}-company`}>Firma</label>
+      <input id={`${formId}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <label class="flex items-start gap-2 text-xs text-white/60">
+      <input type="checkbox" required class="mt-0.5 accent-brand" />
+      <span>
+        Ich habe die <a href="/datenschutzerklaerung/" class="underline hover:text-brand">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage einverstanden.
+      </span>
+    </label>
+
+    <button
+      type="submit"
+      class="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-50"
+    >
+      Absenden
+    </button>
+
+    <p class="form-status text-sm" role="status"></p>
+  </form>
+</div>
+
+<script>
+  const FORM_ENDPOINT = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-form-type]').forEach((form) => {
+    const status = form.querySelector<HTMLParagraphElement>('.form-status');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!FORM_ENDPOINT) {
+        if (status) status.textContent = 'Formular ist noch nicht verbunden. Bitte per E-Mail an unsignedhannover@gmail.com wenden.';
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (data.company) return; // Honeypot ausgefüllt -> stiller Abbruch
+
+      if (button) button.disabled = true;
+      if (status) status.textContent = 'Wird gesendet …';
+
+      try {
+        const response = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formType: form.dataset.formType, ...data }),
+        });
+        if (!response.ok) throw new Error('Request failed');
+        if (status) status.textContent = 'Danke! Wir melden uns bei dir.';
+        form.reset();
+      } catch {
+        if (status) status.textContent = 'Senden fehlgeschlagen. Bitte versuch es erneut oder schreib uns direkt eine E-Mail.';
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  });
+</script>

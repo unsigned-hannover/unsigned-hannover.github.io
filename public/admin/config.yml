@@ -1,0 +1,52 @@
+backend:
+  name: github
+  repo: unsigned-hannover/unsigned # TODO: an echten GitHub-Org/Repo-Namen anpassen
+  branch: main
+  base_url: https://unsigned-oauth.example.workers.dev # TODO: URL des OAuth-Workers eintragen (siehe /worker)
+
+# Bilder/Uploads landen im Repo unter public/uploads, werden von Astro als statische Assets ausgeliefert.
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: events
+    label: Events
+    folder: src/content/events
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: Titel, name: title, widget: string }
+      - { label: Datum & Uhrzeit, name: date, widget: datetime }
+      - { label: Ende (optional), name: endDate, widget: datetime, required: false }
+      - { label: Ort, name: location, widget: string }
+      - { label: Poster (optional), name: poster, widget: image, required: false }
+      - { label: Ticket-Link (optional), name: ticketUrl, widget: string, required: false }
+      - { label: Beschreibung, name: description, widget: text, required: false }
+
+  - name: radio
+    label: Radio-Folgen
+    folder: src/content/radio
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: Titel, name: title, widget: string }
+      - { label: Datum, name: date, widget: datetime }
+      - { label: SoundCloud-Link, name: soundcloudUrl, widget: string, hint: "Öffentlicher SoundCloud-Track- oder Set-Link" }
+      - { label: Beschreibung, name: description, widget: text, required: false }
+
+  - name: site
+    label: Website-Einstellungen
+    files:
+      - name: stats
+        label: Statistiken (Startseite)
+        file: src/content/site/stats.json
+        fields:
+          - label: Statistiken
+            name: stats
+            widget: object
+            fields:
+              - { label: Anzahl Events, name: events, widget: number }
+              - { label: Hörer:innen (Text, z.B. "5000+"), name: listeners, widget: string }
+              - { label: Gäste (Text, z.B. "2500+"), name: guests, widget: string }

@@ -1,0 +1,21 @@
+---
+import { getEntry } from 'astro:content';
+
+const stats = await getEntry('stats', 'stats');
+const items = [
+  { value: stats?.data.events, label: 'Events' },
+  { value: stats?.data.listeners, label: 'Hörer:innen' },
+  { value: stats?.data.guests, label: 'Gäste' },
+];
+---
+
+<div class="grid grid-cols-3 gap-4 text-center">
+  {
+    items.map((item) => (
+      <div>
+        <p class="text-3xl font-extrabold text-brand sm:text-4xl">{item.value}</p>
+        <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-white/50 sm:text-sm">{item.label}</p>
+      </div>
+    ))
+  }
+</div>
