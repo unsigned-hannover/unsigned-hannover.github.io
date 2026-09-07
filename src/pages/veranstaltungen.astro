@@ -22,17 +22,16 @@ const past = visibleEvents
 >
   <section class="hero page-hero">
     <h1 class="hero-wordmark glitch" data-text="VERANSTALTUNGEN">VERANSTALTUNGEN<span class="dot">.</span></h1>
-    <p class="hero-sub">Alle kommenden Termine — und ein Rückblick auf vergangene Übertragungen.</p>
+    <p class="hero-sub">Alle kommenden Termine — und ein Rückblick auf vergangene Abende.</p>
   </section>
 
   <section class="plate">
-    <div class="v-signal">
-      <div class="module-label"><span class="idx">MODULE_02</span> ANSTEHENDE ÜBERTRAGUNGEN</div>
+    <div class="v-glitch">
+      <div class="module-label">KOMMENDE TERMINE</div>
       {
         upcoming.length > 0 ? (
           upcoming.map((event, i) => (
             <EventRow
-              index={i + 1}
               title={event.data.title}
               date={event.data.date}
               location={event.data.location}
@@ -72,11 +71,10 @@ const past = visibleEvents
   {
     past.length > 0 && (
       <section class="plate tinted">
-        <div class="v-signal">
-          <div class="module-label"><span class="idx">MODULE_02B</span> ARCHIV</div>
+        <div class="v-glitch">
+          <div class="module-label">ARCHIV</div>
           {past.map((event, i) => (
             <EventRow
-              index={100 + i}
               title={event.data.title}
               date={event.data.date}
               location={event.data.location}

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* Signal-Variante */
+/* Glitch-Variante */
 @import "@fontsource/archivo-black";
 @import "@fontsource/space-mono/400.css";
 @import "@fontsource/space-mono/700.css";
@@ -36,10 +36,10 @@
 }
 
 /* ============================================================
-   VARIANTE A — "SIGNAL" (Default): Broadcast-Konsole, warm & orangelastig
+   VARIANTE A — "GLITCH" (Default): Broadcast-Konsole, warm & orangelastig
    ============================================================ */
 :root,
-[data-variant="signal"] {
+[data-variant="glitch"] {
   --bg: #150d08;
   --bg2: #23150c;
   --fg: #fdf7ee;
@@ -47,6 +47,7 @@
   --line: rgba(242, 94, 13, 0.32);
   --line-soft: rgba(253, 247, 238, 0.12);
   --nav-h: 56px;
+  --pad-x: clamp(22px, 6vw, 64px);
   --font-ui: var(--font-mono);
   --font-head: var(--font-disp);
 }
@@ -63,6 +64,7 @@
   --line: rgba(255, 255, 255, 0.1);
   --line-soft: rgba(255, 255, 255, 0.1);
   --nav-h: 60px;
+  --pad-x: clamp(24px, 6vw, 40px);
   --font-ui: var(--font-body);
   --font-head: var(--font-cond);
 }
@@ -96,7 +98,7 @@ a {
 }
 
 /* Varianten-Sichtbarkeit: beide Markup-Varianten liegen im DOM, CSS blendet um. */
-[data-variant="editorial"] .v-signal {
+[data-variant="editorial"] .v-glitch {
   display: none !important;
 }
 :root:not([data-variant="editorial"]) .v-editorial {
@@ -104,7 +106,7 @@ a {
 }
 
 /* ============================================================
-   Atmosphäre (nur Signal)
+   Atmosphäre (nur Glitch)
    ============================================================ */
 #noiseCanvas {
   position: fixed;
@@ -296,7 +298,7 @@ a {
   display: none !important;
 }
 
-/* Uhr (Signal) */
+/* Uhr (Glitch) */
 .clock {
   display: none;
   align-items: center;
@@ -347,7 +349,7 @@ main {
 }
 
 /* ============================================================
-   Glitch-Text (Signal)
+   Glitch-Text
    ============================================================ */
 .glitch {
   position: relative;
@@ -515,24 +517,25 @@ main {
   content: none;
 }
 
-section.plate {
+/* Gilt für <section class="plate"> UND <footer class="plate">. */
+.plate {
   position: relative;
-  padding: clamp(50px, 8vw, 110px) clamp(18px, 6vw, 64px);
+  padding: clamp(50px, 8vw, 110px) var(--pad-x);
   border-top: 1px solid var(--line);
 }
-section.plate.tinted {
+.plate.tinted {
   background: linear-gradient(180deg, rgba(242, 94, 13, 0.13) 0%, rgba(242, 94, 13, 0.04) 45%, transparent 100%);
 }
-[data-variant="editorial"] section.plate {
-  padding: clamp(56px, 7vw, 96px) clamp(24px, 6vw, 32px);
+[data-variant="editorial"] .plate {
+  padding: clamp(56px, 7vw, 96px) var(--pad-x);
   border-top: none;
 }
-[data-variant="editorial"] section.plate > * {
+[data-variant="editorial"] .plate > * {
   max-width: 64rem;
   margin-left: auto;
   margin-right: auto;
 }
-[data-variant="editorial"] section.plate.tinted {
+[data-variant="editorial"] .plate.tinted {
   background: var(--bg2);
 }
 
@@ -553,14 +556,14 @@ section.plate.tinted {
 }
 
 /* ============================================================
-   Hero — Signal
+   Hero — Glitch
    ============================================================ */
 .hero {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
   border-top: none;
-  padding-top: clamp(50px, 8vw, 110px);
+  padding: clamp(50px, 8vw, 110px) var(--pad-x) 0;
   background:
     radial-gradient(ellipse 75% 65% at 16% 30%, rgba(242, 94, 13, 0.26) 0%, transparent 62%),
     radial-gradient(ellipse 55% 45% at 88% 76%, rgba(255, 176, 32, 0.14) 0%, transparent 66%);
@@ -581,7 +584,7 @@ section.plate.tinted {
 }
 .rec {
   position: absolute;
-  right: clamp(16px, 4vw, 48px);
+  right: var(--pad-x);
   top: 90px;
   z-index: 3;
   display: flex;
@@ -598,11 +601,12 @@ section.plate.tinted {
 .hero-wordmark {
   position: relative;
   z-index: 2;
-  margin: 8vh 0 0 -1.2vw;
+  margin: 8vh 0 0;
   transform: rotate(-1.6deg);
   font-family: var(--font-disp);
   text-transform: uppercase;
-  font-size: clamp(3.4rem, 15.5vw, 12.5rem);
+  /* Obergrenze so gewählt, dass der orange Punkt nicht am rechten Rand angeschnitten wird. */
+  font-size: clamp(3rem, 14vw, 11rem);
   line-height: 0.82;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -629,7 +633,7 @@ section.plate.tinted {
 }
 .hero-sub {
   position: absolute;
-  left: clamp(18px, 6vw, 64px);
+  left: var(--pad-x);
   bottom: 14%;
   max-width: 34ch;
   z-index: 3;
@@ -646,7 +650,7 @@ section.plate.tinted {
 }
 .hero-coords {
   position: absolute;
-  right: clamp(18px, 6vw, 64px);
+  right: var(--pad-x);
   bottom: 8%;
   z-index: 3;
   text-align: right;
@@ -707,16 +711,19 @@ section.plate.tinted {
   }
 }
 
-/* Page-Hero (Unterseiten, Signal) */
+/* Page-Hero (Unterseiten, Glitch) */
 .page-hero {
   min-height: 0;
   padding-bottom: clamp(40px, 6vw, 70px);
   padding-top: clamp(70px, 10vw, 130px);
 }
 .page-hero .hero-wordmark {
-  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  /* Lange Titel wie "VERANSTALTUNGEN." müssen auf schmalen Screens passen, nicht abgeschnitten werden. */
+  font-size: clamp(1.6rem, 7vw, 5.5rem);
   margin: 0;
   transform: rotate(-0.8deg);
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .page-hero .hero-sub {
   position: static;
@@ -725,8 +732,8 @@ section.plate.tinted {
 }
 [data-variant="editorial"] .page-hero {
   background: var(--bg2);
-  padding-left: clamp(24px, 6vw, 32px);
-  padding-right: clamp(24px, 6vw, 32px);
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
 }
 [data-variant="editorial"] .page-hero .hero-wordmark {
   font-family: var(--font-cond);
@@ -800,7 +807,7 @@ section.plate.tinted {
 .ed-hero-body {
   position: relative;
   z-index: 10;
-  padding: 140px clamp(24px, 6vw, 64px) 96px;
+  padding: 140px var(--pad-x) 96px;
 }
 .ed-hero-body .inner {
   max-width: 64rem;
@@ -875,7 +882,7 @@ section.plate.tinted {
 .ed-stats .inner {
   max-width: 64rem;
   margin: 0 auto;
-  padding: 20px clamp(24px, 6vw, 64px);
+  padding: 20px var(--pad-x);
   display: flex;
   flex-wrap: wrap;
   gap: clamp(24px, 5vw, 64px);
@@ -901,15 +908,15 @@ section.plate.tinted {
 }
 
 /* ============================================================
-   Events — Signal-Zeilen
+   Events — Glitch-Zeilen
    ============================================================ */
 .evt-row {
   display: grid;
   grid-template-columns: 100px 1fr auto;
   gap: 20px;
   align-items: center;
-  padding: 22px clamp(8px, 1.5vw, 18px);
-  margin: 0 clamp(-8px, -1.5vw, -18px);
+  padding: 22px 14px;
+  margin: 0 -14px;
   border-bottom: 1px dashed var(--line);
   transition: background 0.18s;
 }
@@ -1003,6 +1010,10 @@ section.plate.tinted {
 @media (max-width: 860px) {
   .evt-row {
     grid-template-columns: 1fr;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
   .evt-actions {
     justify-self: start;
@@ -1160,7 +1171,7 @@ section.plate.tinted {
 }
 
 /* ============================================================
-   Radio — Signal-Player
+   Radio — Glitch-Player
    ============================================================ */
 .radio-grid {
   display: grid;
@@ -1667,7 +1678,7 @@ section.plate.tinted {
 }
 
 /* ============================================================
-   Stats (Signal)
+   Stats (Glitch)
    ============================================================ */
 .stats-grid {
   display: grid;

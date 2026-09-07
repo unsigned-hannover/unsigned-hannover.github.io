@@ -18,7 +18,7 @@ const episodes = (await getCollection('radio')).sort((a, b) => b.data.date.value
   </section>
 
   <section class="plate">
-    <div class="module-label"><span class="idx">MODULE_03</span> ARCHIV — ALLE FOLGEN</div>
+    <div class="module-label">ALLE FOLGEN</div>
     <div style="display:flex; flex-direction:column; gap:32px;">
       {
         episodes.map((episode, i) => (

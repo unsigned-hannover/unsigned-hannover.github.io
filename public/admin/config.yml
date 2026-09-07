@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: unsigned-hannover/unsigned # TODO: an echten GitHub-Org/Repo-Namen anpassen
+  repo: unsigned-hannover/unsigned-hannover.github.io
   branch: main
   base_url: https://unsigned-oauth.example.workers.dev # TODO: URL des OAuth-Workers eintragen (siehe /worker)
 

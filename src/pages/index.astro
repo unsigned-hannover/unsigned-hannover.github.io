@@ -23,10 +23,10 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
   description="UNSIGNED. ist ein Kulturverein aus Hannover für elektronische Musik: Events, Podcast und eine Community zum Mitmachen."
 >
   <!-- ============ HERO ============ -->
-  <section class="hero v-signal">
+  <section class="hero v-glitch">
     <div class="rail-left">TECH HOUSE <b>//</b> TECHNO — HANNOVER, DE <b>///</b> OPEN DECKS — BAR NIGHTS — DAY PARTIES</div>
 
-    <div class="rec"><span class="flicker-dot">●</span> ON AIR — SIGNAL AKTIV</div>
+    <div class="rec"><span class="flicker-dot">●</span> HANNOVER — SEIT 2023</div>
 
     <h1 class="hero-wordmark glitch" data-text="UNSIGNED.">UNSIGNED<span class="dot">.</span></h1>
 
@@ -40,32 +40,30 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
 
     <div class="hero-coords">
       52.3759° N / 9.7320° E<br />
-      <b>PLATZBAR</b> — HANNOVER<br />
-      SIG ▮▮▮▮▯ STABIL
+      <b>PLATZBAR</b> — HANNOVER
     </div>
 
-    <div class="scrollcue"><span>↓</span> SCROLLEN — REC 001</div>
+    <div class="scrollcue"><span>↓</span> SCROLLEN</div>
   </section>
 
   <div class="v-editorial">
     <HeroEditorial />
   </div>
 
-  <!-- ============ STATS (nur Signal – Editorial hat die Leiste im Hero) ============ -->
-  <section class="plate tinted v-signal">
-    <div class="module-label"><span class="idx">MODULE_01</span> SIGNALSTÄRKE — MESSWERTE</div>
+  <!-- ============ STATS (nur Glitch – Editorial hat die Leiste im Hero) ============ -->
+  <section class="plate tinted v-glitch">
+    <div class="module-label">IN ZAHLEN</div>
     <StatsBlock />
   </section>
 
   <!-- ============ TERMINE ============ -->
   <section class="plate" id="termine">
-    <div class="v-signal">
-      <div class="module-label"><span class="idx">MODULE_02</span> ANSTEHENDE ÜBERTRAGUNGEN</div>
+    <div class="v-glitch">
+      <div class="module-label">KOMMENDE TERMINE</div>
       {
         upcomingEvents.length > 0 ? (
           upcomingEvents.map((event, i) => (
             <EventRow
-              index={i + 1}
               title={event.data.title}
               date={event.data.date}
               location={event.data.location}
@@ -106,7 +104,7 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
       </div>
     </div>
 
-    <p class="prose v-signal" style="margin-top:22px;">
+    <p class="prose v-glitch" style="margin-top:22px;">
       Alle <a href="/veranstaltungen/" style="color:var(--color-brand);">Veranstaltungen im Archiv →</a> · Announcements auch im
       <a href="https://www.instagram.com/unsigned.hannover/" style="color:var(--color-brand);"> WhatsApp-Kanal</a>.
     </p>
@@ -114,8 +112,8 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
 
   <!-- ============ RADIO ============ -->
   <section class="plate tinted">
-    <div class="v-signal">
-      <div class="module-label"><span class="idx">MODULE_03</span> BROADCAST</div>
+    <div class="v-glitch">
+      <div class="module-label">RADIO</div>
       <div class="radio-grid">
         <div>
           <h2 class="radio-head glitch" data-text="UNSIGNED.RADIO">UNSIGNED<span class="dot">.</span>RADIO</h2>
@@ -138,8 +136,8 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
 
   <!-- ============ CTA MITGLIED ============ -->
   <section class="plate cta-plate">
-    <div class="module-label"><span class="idx">MODULE_04</span> MITGLIEDSCHAFT</div>
-    <h2 class="v-signal">WERDE TEIL DES SIGNALS<span class="dot">.</span></h2>
+    <div class="module-label">MITGLIEDSCHAFT</div>
+    <h2 class="v-glitch">WERDE MITGLIED<span class="dot">.</span></h2>
     <h2 class="v-editorial">Lust mit<br />zu machen<span class="dot">?</span></h2>
     <p>
       Kulturverein UNSIGNED. e.V. lebt von seinen Mitgliedern — Zugang zu Open Decks, Mitsprache bei der Programmplanung
@@ -150,7 +148,7 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
 
   <!-- ============ KONTAKT ============ -->
   <section class="plate" id="kontakt">
-    <div class="module-label"><span class="idx">MODULE_04B</span> KONTAKT</div>
+    <div class="module-label">KONTAKT</div>
     <ContactForm formType="contact" heading="Schreib uns" />
   </section>
 </Layout>

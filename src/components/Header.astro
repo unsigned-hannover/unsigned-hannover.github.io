@@ -9,7 +9,7 @@ const nav = [
 const currentPath = Astro.url.pathname;
 
 const variants = [
-  { value: 'signal', label: 'Signal' },
+  { value: 'glitch', label: 'Glitch' },
   { value: 'editorial', label: 'Editorial' },
 ];
 ---
@@ -75,7 +75,7 @@ const variants = [
   setInterval(tick, 1000);
 
   function markCurrent() {
-    const current = document.documentElement.getAttribute('data-variant') || 'signal';
+    const current = document.documentElement.getAttribute('data-variant') || 'glitch';
     document.querySelectorAll<HTMLButtonElement>('[data-variant-value]').forEach((btn) => {
       btn.classList.toggle('is-current', btn.dataset.variantValue === current);
     });

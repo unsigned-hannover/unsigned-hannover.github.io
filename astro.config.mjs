@@ -7,7 +7,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: anpassen, sobald der Domain-Umzug (unsignedhannover.com) ansteht.
+  // Repo heißt unsigned-hannover.github.io -> Seite läuft im Wurzelverzeichnis, kein `base` nötig.
+  // Beim späteren Domain-Umzug hier auf https://unsignedhannover.com umstellen.
   site: 'https://unsigned-hannover.github.io',
 
   vite: {

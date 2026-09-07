@@ -16,7 +16,7 @@ src/
   components/                Wiederverwendbare Bausteine (Header, EventCard, Formular, ...)
   layouts/Layout.astro        Grundgerüst (Head, Header, Footer) für alle Seiten
   pages/                      Eine Datei = eine Route (/, /radio/, /kulturverein/, ...)
-  styles/global.css           Komplettes Design-System ("Signal"): Farben, Fonts, HUD-Bausteine, Animationen
+  styles/global.css           Design-System beider Varianten: Farben, Fonts, Bausteine, Animationen
 public/
   admin/                      Decap-CMS-Oberfläche unter /admin
 worker/
@@ -56,21 +56,21 @@ Ohne konfigurierten Endpoint zeigen die Formulare eine Fallback-Meldung ("bitte 
 Push auf `main` löst `.github/workflows/deploy.yml` aus: Build + Deploy nach GitHub Pages. Einmalig in den
 Repo-Settings unter „Pages" die Quelle auf „GitHub Actions" stellen.
 
-`astro.config.mjs` → `site` muss zur tatsächlichen Pages-URL passen (aktuell Platzhalter
-`https://unsigned-hannover.github.io` — am einfachsten das Repo so nennen, dann läuft die Seite ohne Unterpfad).
-Domain-Umzug auf unsignedhannover.com später per CNAME, ohne Codeänderung.
+Repo: `unsigned-hannover/unsigned-hannover.github.io` → die Seite läuft unter
+`https://unsigned-hannover.github.io/`, also im Wurzelverzeichnis. Deshalb ist in `astro.config.mjs`
+kein `base` nötig. Domain-Umzug auf unsignedhannover.com später per CNAME.
 
 ## Design-Varianten (temporär)
 
 Es gibt aktuell **zwei** Varianten, umschaltbar über den Switcher rechts in der Navigation
 (gespeichert in `localStorage`, Schlüssel `unsigned-variant`):
 
-- **Signal** — Broadcast-/Sendekonsolen-Look (siehe unten)
+- **Glitch** — dunkel/orange, Glitch-Typografie und Oszilloskop-Player (siehe unten)
 - **Editorial** — Umsetzung der Figma-Vorlage: Barlow Condensed + DM Sans, Foto-Hero mit
   Verlauf und orangem Akzentbalken, Termine mit Datumsblock und Kategorie-Tags, orange
   Vollflächen-CTA, klassischer Spalten-Footer
 
-Beide Varianten liegen parallel im Markup (`.v-signal` / `.v-editorial`) und werden per CSS
+Beide Varianten liegen parallel im Markup (`.v-glitch` / `.v-editorial`) und werden per CSS
 umgeschaltet. Sobald eine Richtung feststeht: jeweils andere Variante samt Switcher entfernen.
 
 Die Fotos unter `public/img/` sind **Platzhalter** (Unsplash, lokal gespeichert, damit kein
@@ -78,10 +78,14 @@ externer Request rausgeht) — vor Go-Live durch eigene Vereinsfotos ersetzen.
 
 ## Design
 
-Visuelle Richtung „Signal": Broadcast-/Sendekonsolen-Ästhetik — Glitch-Typografie (RGB-Split), Scanlines,
-Film-Grain-Canvas, HUD-Module mit Eckklammern, Oszilloskop-Grafik im Radio-Player, Laufband + Live-Uhr im Header.
-Schriften: Archivo Black (Display) und Space Mono (alles andere), beide via Fontsource lokal ausgeliefert — keine
-Verbindung zu Google-CDNs. Alle Animationen respektieren `prefers-reduced-motion`.
+Variante „Glitch": Glitch-Typografie (RGB-Split), Scanlines, Film-Grain-Canvas, Eckklammer-Rahmen,
+Oszilloskop-Grafik im Radio-Player, Live-Uhr im Header. Schriften: Archivo Black (Display) und Space Mono
+(alles andere), beide via Fontsource lokal ausgeliefert — keine Verbindung zu Google-CDNs. Alle Animationen
+respektieren `prefers-reduced-motion`.
+
+Die Sendungs-/Broadcast-Metapher der ersten Fassung (ON AIR, „Übertragungen", Signalstärke, MODULE_XX,
+TX-Nummern) wurde bewusst entfernt: sie war ein Arbeitstitel aus dem Konzeptentwurf, keine Setzung des Vereins.
+Sektionen heißen jetzt schlicht, wie sie heißen.
 
 Der SoundCloud-Player lädt bewusst erst nach Klick auf Play (DSGVO); bis dahin läuft nur die lokale
 Canvas-Oszilloskop-Grafik, es geht kein Request an SoundCloud raus.

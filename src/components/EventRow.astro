@@ -5,16 +5,14 @@ interface Props {
   location: string;
   description?: string;
   ticketUrl?: string;
-  index?: number;
   archived?: boolean;
 }
 
-const { title, date, location, description, ticketUrl, index = 1, archived = false } = Astro.props;
+const { title, date, location, description, ticketUrl, archived = false } = Astro.props;
 
 const day = String(date.getDate()).padStart(2, '0');
 const month = String(date.getMonth() + 1).padStart(2, '0');
 const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-const txId = `TX_${String(index).padStart(3, '0')}`;
 
 function toIcsDate(d: Date) {
   return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -37,7 +35,6 @@ const icsHref = `data:text/calendar;charset=utf-8,${encodeURIComponent(
 
 <div class={`evt-row ${archived ? 'is-archived' : ''}`}>
   <div class="evt-idx">
-    {txId}
     <span class="dt">{day}.{month}</span>
     <span class="tm">{time}</span>
   </div>
