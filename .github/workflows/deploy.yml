@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Täglicher Rebuild, damit vergangene Termine automatisch ins Archiv wandern
+  # ("kommend"/"vergangen" wird beim Build entschieden). 03:00 UTC = nachts in Hannover.
+  schedule:
+    - cron: '0 3 * * *'
 
 permissions:
   contents: read
