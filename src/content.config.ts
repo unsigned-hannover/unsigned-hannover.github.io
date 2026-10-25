@@ -17,11 +17,17 @@ const events = defineCollection({
 
 const radio = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/radio' }),
+  // Wird von scripts/sync-soundcloud.mjs aus dem SoundCloud-RSS-Feed befüllt, danach im CMS editierbar.
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
     soundcloudUrl: z.string().url(),
+    soundcloudId: z.coerce.string().optional(),
+    duration: z.string().optional(),
+    cover: z.string().optional(),
+    genres: z.array(z.string()).default([]),
     description: z.string().optional(),
+    hidden: z.boolean().default(false),
   }),
 });
 

@@ -1,0 +1,63 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import SetFeatured from '../../components/SetFeatured.astro';
+import SetRow from '../../components/SetRow.astro';
+import Pagination from '../../components/Pagination.astro';
+import { getSets, type RadioSet } from '../../lib/radio';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const sets = await getSets();
+  // Hinweis: getStaticPaths läuft isoliert, Konstanten müssen hier drin stehen.
+  const PAGE_SIZE = 20;
+  // Das neueste Set steht oben groß, die Liste darunter beginnt mit dem zweitneuesten.
+  return paginate(sets.slice(1), { pageSize: PAGE_SIZE, props: { latest: sets[0], total: sets.length } });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<RadioSet>;
+  latest?: RadioSet;
+  total: number;
+}
+
+const { page, latest, total } = Astro.props;
+const isFirst = page.currentPage === 1;
+---
+
+<Layout
+  title={isFirst ? 'Radio' : `Radio – Seite ${page.currentPage}`}
+  description="UNSIGNED.RADIO – Sets von lokalen DJs und Artists aus der Hannoveraner Electronic-Szene, auf SoundCloud."
+>
+  <section class="hero page-hero">
+    <h1 class="hero-wordmark glitch" data-text="UNSIGNED.RADIO">UNSIGNED<span class="dot">.</span>RADIO</h1>
+    <p class="hero-sub">
+      Regelmäßig neue Sets von lokalen DJs und Artists aus der Hannoveraner Electronic-Szene, live gemixt und auf
+      SoundCloud veröffentlicht.
+    </p>
+  </section>
+
+  {
+    isFirst && latest && (
+      <section class="plate">
+        <div class="module-label">NEUESTES SET</div>
+        <SetFeatured set={latest} />
+      </section>
+    )
+  }
+
+  <section class={`plate ${isFirst ? 'tinted' : ''}`} id="sets">
+    <div class="module-label">ALLE SETS · {total}</div>
+    {
+      page.data.length > 0 ? (
+        <div class="set-list">
+          {page.data.map((set) => (
+            <SetRow set={set} />
+          ))}
+        </div>
+      ) : (
+        !latest && <p class="prose">Noch keine Sets veröffentlicht. Schau bald wieder vorbei.</p>
+      )
+    }
+    <Pagination currentPage={page.currentPage} lastPage={page.lastPage} base="/radio/" hash="#sets" />
+  </section>
+</Layout>
