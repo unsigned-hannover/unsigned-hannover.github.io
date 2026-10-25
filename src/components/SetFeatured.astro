@@ -1,0 +1,42 @@
+---
+// Das neueste Set groß oben auf /radio/. DSGVO: Player lädt erst nach Klick.
+import { embedSrc, formatSetDate, type RadioSet } from '../lib/radio';
+
+interface Props {
+  set: RadioSet;
+}
+
+const { title, date, duration, cover, genres, description, soundcloudUrl } = Astro.props.set.data;
+---
+
+<div class="set-featured">
+  <div class="set-featured-media hud" data-embed-src={embedSrc(soundcloudUrl, true)}>
+    <img src={cover ?? '/img/radio-placeholder.jpg'} alt="" width="500" height="500" />
+    <button type="button" class="ed-btn set-featured-play" aria-label={`${title} laden und abspielen`}>▶ Abspielen</button>
+  </div>
+
+  <div class="set-featured-body">
+    <p class="ed-eyebrow">{formatSetDate(date)}{duration && ` · ${duration}`}</p>
+    <h2 class="set-featured-title">{title}</h2>
+    {
+      genres.length > 0 && (
+        <div class="ed-tags">
+          {genres.map((genre) => (
+            <span class="ed-tag">{genre}</span>
+          ))}
+        </div>
+      )
+    }
+    {description && <p class="prose set-featured-desc">{description}</p>}
+    <a class="set-link" href={soundcloudUrl} target="_blank" rel="noopener noreferrer">Auf SoundCloud öffnen ↗</a>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.set-featured-media[data-embed-src]').forEach((media) => {
+    media.querySelector('.set-featured-play')?.addEventListener('click', () => {
+      media.innerHTML = `<iframe class="player-frame" src="${media.dataset.embedSrc}" allow="autoplay" title="SoundCloud-Player"></iframe>`;
+      media.classList.add('is-playing');
+    });
+  });
+</script>

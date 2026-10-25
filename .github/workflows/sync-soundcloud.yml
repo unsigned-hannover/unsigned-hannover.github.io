@@ -1,0 +1,53 @@
+name: SoundCloud-Sets synchronisieren
+
+on:
+  # Kurz vor dem nächtlichen Deploy (03:00 UTC), damit neue Sets direkt mit rausgehen.
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: soundcloud-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Neue Sets aus dem RSS-Feed holen
+        run: node scripts/sync-soundcloud.mjs
+        env:
+          # Optional als Repository-Variablen überschreibbar (Settings → Secrets and variables → Actions → Variables).
+          SOUNDCLOUD_RSS_URL: ${{ vars.SOUNDCLOUD_RSS_URL }}
+          SOUNDCLOUD_PROFILE_URL: ${{ vars.SOUNDCLOUD_PROFILE_URL }}
+
+      - name: Änderungen committen
+        id: commit
+        run: |
+          git add src/content/radio public/radio
+          if git diff --cached --quiet; then
+            echo "Keine neuen Sets."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "content: neue SoundCloud-Sets"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # Pushes mit dem GITHUB_TOKEN lösen keinen Workflow aus, deshalb den Deploy explizit starten.
+      - name: Deploy anstoßen
+        if: steps.commit.outputs.changed == 'true' && github.ref_name == 'main'
+        run: gh workflow run deploy.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}

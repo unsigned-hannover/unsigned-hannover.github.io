@@ -95,3 +95,29 @@ Canvas-Oszilloskop-Grafik, es geht kein Request an SoundCloud raus.
 Impressum und Datenschutzerklärung (`src/pages/impressum.astro`, `src/pages/datenschutzerklaerung.astro`) wurden
 inhaltlich vom bisherigen Baukasten übernommen bzw. an die neue technische Basis angepasst. Vor Go-Live vom
 Vorstand / einer Rechtsberatung final gegenlesen lassen.
+
+## Radio / SoundCloud-Sets
+
+Die Sets kommen automatisch aus dem SoundCloud-RSS-Feed des Vereinsprofils
+(`https://soundcloud.com/unsignedhannover`). Der Workflow `.github/workflows/sync-soundcloud.yml` läuft jede Nacht
+(02:30 UTC, manuell unter Actions → „SoundCloud-Sets synchronisieren“ → „Run workflow“) und ruft
+`scripts/sync-soundcloud.mjs` auf:
+
+- Für jedes neue Set entsteht eine Datei in `src/content/radio/` (Titel, Datum, Link, Dauer, Beschreibung) und das
+  Cover wird lokal unter `public/radio/covers/` gespeichert, damit beim Seitenaufruf kein Request an SoundCloud geht.
+- Bestehende Dateien werden nie überschrieben. Genres, Beschreibung oder „Ausblenden“ kann man also gefahrlos im CMS
+  ändern.
+- Genres werden beim Import aus Titel und Beschreibung geraten (House, Tech House, Techno, …) und sollten im CMS
+  kurz geprüft werden. Sie sind die Grundlage für spätere Genre-Seiten wie `/radio/house/`.
+- Wurden neue Sets gefunden, committet der Workflow sie und stößt den Deploy an.
+
+Voraussetzung auf SoundCloud: Ein Set erscheint nur im Feed, wenn es öffentlich ist und unter „Permissions“ die
+RSS-Option aktiviert hat. Für alte Sets geht das gesammelt über „Tracks“ → mehrere auswählen → „Edit tracks“, für
+neue Uploads unter „Content Settings“ → Upload defaults. Der Feed fasst maximal die 500 neuesten Sets.
+
+Der Feed wird über die Profilseite gefunden. Falls das einmal nicht klappt, die Feed-URL direkt als
+Repository-Variable `SOUNDCLOUD_RSS_URL` eintragen.
+
+Lokal: `npm run sync:soundcloud`.
+
+`/radio/` zeigt das neueste Set groß und darunter alle weiteren, 20 pro Seite (`/radio/2/`, `/radio/3/`, …).

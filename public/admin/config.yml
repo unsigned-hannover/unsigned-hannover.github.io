@@ -25,17 +25,32 @@ collections:
       - { label: Beschreibung, name: description, widget: text, required: false }
       - { label: Ausblenden, name: hidden, widget: boolean, default: false, hint: "Aktiviert = Event erscheint nirgends auf der Website", required: false }
 
+  # Sets werden nachts automatisch aus dem SoundCloud-RSS-Feed angelegt (scripts/sync-soundcloud.mjs).
+  # Hier nur nachbearbeiten: Genres korrigieren, Beschreibung kürzen, einzelne Sets ausblenden.
   - name: radio
-    label: Radio-Folgen
+    label: Radio-Sets
+    label_singular: Set
     folder: src/content/radio
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     identifier_field: title
+    sortable_fields: [date, title]
     fields:
       - { label: Titel, name: title, widget: string }
       - { label: Datum, name: date, widget: datetime }
-      - { label: SoundCloud-Link, name: soundcloudUrl, widget: string, hint: "Öffentlicher SoundCloud-Track- oder Set-Link" }
+      - { label: SoundCloud-Link, name: soundcloudUrl, widget: string, hint: "Öffentlicher SoundCloud-Track-Link" }
+      - label: Genres
+        name: genres
+        widget: select
+        multiple: true
+        required: false
+        hint: "Wird beim Import aus Titel und Beschreibung geraten, bitte prüfen. Grundlage für spätere Genre-Seiten."
+        options: [House, Deep House, Tech House, Minimal, Techno, Melodic Techno, Hard Techno, Trance, Disco, Electro, Breaks, Drum & Bass, Ambient]
+      - { label: Cover, name: cover, widget: image, required: false }
+      - { label: Dauer, name: duration, widget: string, required: false, hint: "z.B. 1:02:30" }
       - { label: Beschreibung, name: description, widget: text, required: false }
+      - { label: Ausblenden, name: hidden, widget: boolean, default: false, required: false, hint: "Aktiviert = Set erscheint nirgends auf der Website" }
+      - { label: SoundCloud-ID, name: soundcloudId, widget: hidden, required: false }
 
   - name: site
     label: Website-Einstellungen

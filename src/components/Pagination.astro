@@ -1,0 +1,42 @@
+---
+// Seitennavigation für paginierte Listen: 1 … 4 5 6 … 12
+interface Props {
+  currentPage: number;
+  lastPage: number;
+  /** Basis-URL der ersten Seite, z.B. "/radio/"; Folgeseiten sind "/radio/2/" usw. */
+  base: string;
+  /** Optionaler Anker, damit man direkt bei der Liste landet, z.B. "#sets". */
+  hash?: string;
+}
+
+const { currentPage, lastPage, base, hash = '' } = Astro.props;
+const href = (page: number) => (page === 1 ? base : `${base}${page}/`) + hash;
+
+const pages: (number | null)[] = [];
+for (let page = 1; page <= lastPage; page++) {
+  if (page === 1 || page === lastPage || Math.abs(page - currentPage) <= 1) pages.push(page);
+  else if (pages.at(-1) !== null) pages.push(null);
+}
+---
+
+{
+  lastPage > 1 && (
+    <nav class="pagination" aria-label="Seiten">
+      {currentPage > 1 ? <a href={href(currentPage - 1)} rel="prev">← Neuer</a> : <span class="is-disabled">← Neuer</span>}
+      <ol>
+        {pages.map((page) =>
+          page === null ? (
+            <li class="gap">…</li>
+          ) : (
+            <li>
+              <a href={href(page)} aria-current={page === currentPage ? 'page' : undefined}>
+                {page}
+              </a>
+            </li>
+          )
+        )}
+      </ol>
+      {currentPage < lastPage ? <a href={href(currentPage + 1)} rel="next">Älter →</a> : <span class="is-disabled">Älter →</span>}
+    </nav>
+  )
+}

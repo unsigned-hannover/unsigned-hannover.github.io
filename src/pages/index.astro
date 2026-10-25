@@ -8,6 +8,7 @@ import RadioEditorial from '../components/RadioEditorial.astro';
 import HeroEditorial from '../components/HeroEditorial.astro';
 import StatsBlock from '../components/StatsBlock.astro';
 import ContactForm from '../components/ContactForm.astro';
+import { getSets } from '../lib/radio';
 
 const now = new Date();
 const upcomingEvents = (await getCollection('events'))
@@ -15,7 +16,7 @@ const upcomingEvents = (await getCollection('events'))
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
   .slice(0, 5);
 
-const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const [latestEpisode] = await getSets();
 ---
 
 <Layout
@@ -122,15 +123,15 @@ const latestEpisode = (await getCollection('radio')).sort((a, b) => b.data.date.
             aufgenommen von den Leuten, die bei uns auflegen. Kein Filter, kein Gatekeeping.
           </p>
           <div class="onair"><span class="flicker-dot">●</span> NEUE FOLGE ALLE 2 WOCHEN</div>
-          <p style="margin-top:20px;"><a href="/radio/" style="color:var(--color-brand); font-size:12px; letter-spacing:.15em;">ALLE FOLGEN →</a></p>
+          <p style="margin-top:20px;"><a href="/radio/" style="color:var(--color-brand); font-size:12px; letter-spacing:.15em;">ALLE SETS →</a></p>
         </div>
 
-        {latestEpisode && <RadioPlayer title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} episodeNumber="NEUESTE FOLGE" />}
+        {latestEpisode && <RadioPlayer title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} episodeNumber="NEUESTES SET" />}
       </div>
     </div>
 
     <div class="v-editorial">
-      {latestEpisode && <RadioEditorial title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} />}
+      {latestEpisode && <RadioEditorial title={latestEpisode.data.title} soundcloudUrl={latestEpisode.data.soundcloudUrl} cover={latestEpisode.data.cover} />}
     </div>
   </section>
 
