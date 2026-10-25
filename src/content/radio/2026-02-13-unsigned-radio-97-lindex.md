@@ -1,0 +1,10 @@
+---
+title: "unsigned.radio 97 - LINDEX"
+date: "2026-02-13T17:00:14.000Z"
+soundcloudUrl: "https://soundcloud.com/unsignedhannover/unsigned-radio-97-lindex"
+soundcloudId: "2264674238"
+duration: "1:07:02"
+cover: "/radio/covers/2264674238.jpg"
+genres: ["Techno"]
+description: "Wir freuen uns sehr euch auch in dieser Woche mit LINDEX wieder eine ganz besondere Künstlerin vorstellen zu dürfen!\nÜber ihre langjährige Liebe zur elektronischen Musik in all ihren Facetten und durch den Ansporn guter Freund*innen fand sie vor etwa fünf Jahren selbst zum Auflegen. Seitdem ist LINDEX als DJ in Clubs unterwegs – angefangen in Göttingen, über Braunschweig und Hannover bis nach Berlin und auf lokalen Festivals. Dabei folgt sie stets ihrer Stimmung und Intuition, legt großen Wert auf fein ausgewählte Tracks und unterstützt besonders FLINTA* Produzent*innen.\n\nEine Zeit lang hatte das Leben für LINDEX andere Prioritäten, weshalb es etwas ruhiger um sie wurde. Umso mehr freut sie sich, mit diesem Set für unsigned.radio ihren aktuellen Sound zu präsentieren: hypnotischer und treibender Techno, geprägt von rohen und minimalistischen Elementen.\n\nViel Spaß mit LINDEX!\n\nsoundcloud.com/lindex_x\n\nTracklist:\n1          Capon - Music For Your Innie                       \n2          Kamen - Night Life    \n3          LUAR - Mind Control (HUJUS Remix)\n4          E2NMN - Dream\n5          Esko - Fade Into Form\n6          Aarayah - I Have Been\n7          Jaylo - unreleased\n8          Alison Belle - That thing (Original Mix)\n9          Jack Fresia - Hanaten (Jack Fresia Remix)\n10        Diana Franco - Whispers\n11        Taimer - Muy Buena Tu Libertad Liberto      \n12        Michael Ius - Stingray\n13        Pakard - Extracto\n14        radd - Fizzy Capsule\n15        Kameliia & Rodhad - CARMINE 03\n16        Jaylo - unreleased\n17        Pre Silent - Blown Fuse\n18        Ana Alves - She Makes Noise\n19        R.M.K - Werk It (ALNA Remix)\n20        Hemka - Rich Sex\n21        Loren Kuehne - Behind The Sense\n22        illousion - Twinning\n23        Alison Belle - Waiting"
+---
