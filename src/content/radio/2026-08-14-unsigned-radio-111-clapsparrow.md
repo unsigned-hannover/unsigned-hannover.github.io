@@ -6,5 +6,4 @@ soundcloudId: "2381674527"
 duration: "1:09:03"
 cover: "/radio/covers/2381674527.jpg"
 genres: []
-description: "unsigned.radio 111 - Clapsparrow by unsigned.radio"
 ---

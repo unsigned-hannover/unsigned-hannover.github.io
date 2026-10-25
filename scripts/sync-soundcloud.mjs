@@ -177,7 +177,9 @@ for (const item of items) {
 
   const title = tag(item, 'title');
   const date = new Date(tag(item, 'pubDate'));
-  const description = tag(item, 'description') || tag(item, 'itunes:summary');
+  // SoundCloud füllt die Beschreibung ohne eigenen Text mit "<Titel> by <Profil>"; das lassen wir weg.
+  const rawDescription = tag(item, 'description') || tag(item, 'itunes:summary');
+  const description = rawDescription.startsWith(`${title} by `) ? '' : rawDescription;
   const isoDay = date.toISOString().slice(0, 10);
 
   let file = path.join(CONTENT_DIR, `${isoDay}-${slugify(title) || id}.md`);

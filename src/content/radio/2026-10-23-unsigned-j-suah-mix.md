@@ -6,5 +6,4 @@ soundcloudId: "2424207636"
 duration: "59:22"
 cover: "/radio/covers/2424207636.jpg"
 genres: []
-description: "Unsigned_JØSUAH_MIX by unsigned.radio"
 ---

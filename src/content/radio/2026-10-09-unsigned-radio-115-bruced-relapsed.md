@@ -6,5 +6,4 @@ soundcloudId: "2410074096"
 duration: "1:32:32"
 cover: "/radio/covers/2410074096.jpg"
 genres: []
-description: "UNSIGNED.Radio 115 - Bruced Relapsed by unsigned.radio"
 ---
