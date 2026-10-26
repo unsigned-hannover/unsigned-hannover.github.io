@@ -7,6 +7,15 @@ export interface Env {
   GITHUB_CLIENT_SECRET: string;
 }
 
+// Nur diese Seiten dürfen das Token empfangen. Ohne die Prüfung könnte jede fremde Seite das Login-Popup öffnen
+// und sich das Token eines bereits bei GitHub angemeldeten Redaktionsmitglieds schicken lassen.
+const ALLOWED_ORIGINS = [
+  'https://unsigned-hannover.github.io',
+  'https://unsignedhannover.com',
+  'https://www.unsignedhannover.com',
+  'http://localhost:4321',
+];
+
 function renderCallbackPage(status: 'success' | 'error', payload: unknown) {
   const message = `authorization:github:${status}:${JSON.stringify(payload)}`;
   return `<!doctype html>
@@ -14,7 +23,9 @@ function renderCallbackPage(status: 'success' | 'error', payload: unknown) {
   <body>
     <script>
       (function () {
+        var allowed = ${JSON.stringify(ALLOWED_ORIGINS)};
         function receiveMessage(e) {
+          if (allowed.indexOf(e.origin) === -1) return;
           window.opener.postMessage(${JSON.stringify(message)}, e.origin);
           window.removeEventListener('message', receiveMessage, false);
         }
