@@ -2,7 +2,7 @@ backend:
   name: github
   repo: unsigned-hannover/unsigned-hannover.github.io
   branch: main
-  base_url: https://unsigned-oauth.example.workers.dev # TODO: URL des OAuth-Workers eintragen (siehe /worker)
+  base_url: https://unsigned-oauth.elbebass.workers.dev # OAuth-Worker (worker/oauth-provider), läuft auf Max' Cloudflare-Account
 
 # Bilder/Uploads landen im Repo unter public/uploads, werden von Astro als statische Assets ausgeliefert.
 media_folder: "public/uploads"
