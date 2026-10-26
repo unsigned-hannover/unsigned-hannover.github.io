@@ -11,10 +11,12 @@ interface Props {
 const { title, date, location, description, ticketUrl, archived = false } = Astro.props;
 
 const months = ['', 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
-const dayName = date.toLocaleDateString('de-DE', { weekday: 'short' }).replace('.', '');
-const day = String(date.getDate()).padStart(2, '0');
-const month = months[date.getMonth() + 1];
-const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+// Immer in Berliner Zeit formatieren, der Build läuft auf GitHub Actions in UTC.
+const timeZone = 'Europe/Berlin';
+const dayName = date.toLocaleDateString('de-DE', { weekday: 'short', timeZone }).replace('.', '');
+const day = date.toLocaleDateString('de-DE', { day: '2-digit', timeZone });
+const month = months[Number(date.toLocaleDateString('de-DE', { month: 'numeric', timeZone }))];
+const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', timeZone });
 
 // Tag aus dem Titel ableiten – hält das CMS-Schema unverändert.
 const upper = title.toUpperCase();

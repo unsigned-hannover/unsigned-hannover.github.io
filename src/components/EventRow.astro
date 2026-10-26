@@ -10,9 +10,11 @@ interface Props {
 
 const { title, date, location, description, ticketUrl, archived = false } = Astro.props;
 
-const day = String(date.getDate()).padStart(2, '0');
-const month = String(date.getMonth() + 1).padStart(2, '0');
-const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+// Immer in Berliner Zeit formatieren, der Build läuft auf GitHub Actions in UTC.
+const timeZone = 'Europe/Berlin';
+const day = date.toLocaleDateString('de-DE', { day: '2-digit', timeZone });
+const month = date.toLocaleDateString('de-DE', { month: '2-digit', timeZone });
+const time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', timeZone });
 
 function toIcsDate(d: Date) {
   return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
